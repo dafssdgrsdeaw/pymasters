@@ -410,27 +410,77 @@ function copyToEditor(enc) {
 }
 
 // ===== SYNTAX HIGHLIGHTING =====
+const HL_KEYWORDS = new Set(['def','class','if','elif','else','for','while','return','import','from','in','not','and','or','True','False','None','try','except','finally','with','as','pass','break','continue','lambda','raise','yield','global','nonlocal']);
+const HL_BUILTINS = new Set(['print','len','range','type','int','float','str','bool','list','dict','set','tuple','input','sum','max','min','abs','round','sorted','enumerate','zip','map','filter','open','super','isinstance','hasattr','getattr','setattr']);
+
+function escHL(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
+
 function highlightCode(code) {
-  let escaped = esc(code);
-  // Strings (double and single quoted)
-  escaped = escaped.replace(/((&quot;|&#039;|"|')(.*?)(\2))/g, '<span class="hl-str">$1</span>');
-  // f-strings
-  escaped = escaped.replace(/\b(f)(&quot;|&#039;|"|')/g, '<span class="hl-str">$1$2');
-  // Comments
-  escaped = escaped.replace(/(#.*?)$/gm, '<span class="hl-cmt">$1</span>');
-  // Keywords
-  const keywords = ['def','class','if','elif','else','for','while','return','import','from','in','not','and','or','True','False','None','try','except','finally','with','as','pass','break','continue','lambda','raise','yield','global','nonlocal'];
-  keywords.forEach(kw => {
-    escaped = escaped.replace(new RegExp('\\b(' + kw + ')\\b', 'g'), '<span class="hl-kw">$1</span>');
-  });
-  // Built-in functions
-  const builtins = ['print','len','range','type','int','float','str','bool','list','dict','set','tuple','input','sum','max','min','abs','round','sorted','enumerate','zip','map','filter','open','super','isinstance','hasattr','getattr','setattr'];
-  builtins.forEach(fn => {
-    escaped = escaped.replace(new RegExp('\\b(' + fn + ')(\\()', 'g'), '<span class="hl-fn">$1</span>$2');
-  });
-  // Numbers
-  escaped = escaped.replace(/\b(\d+\.?\d*)\b/g, '<span class="hl-num">$1</span>');
-  return escaped;
+  let r = '';
+  let i = 0;
+  const n = code.length;
+  while (i < n) {
+    // Comments
+    if (code[i] === '#') {
+      let e = code.indexOf('\n', i);
+      if (e === -1) e = n;
+      r += '<span class="hl-cmt">' + escHL(code.slice(i, e)) + '</span>';
+      i = e;
+      continue;
+    }
+    // Strings
+    if (code[i] === '"' || code[i] === "'") {
+      const q = code[i];
+      let e = i + 1;
+      if (code.slice(i, i+3) === q+q+q) {
+        e = code.indexOf(q+q+q, i+3);
+        e = e === -1 ? n : e + 3;
+      } else {
+        while (e < n && code[e] !== q && code[e] !== '\n') {
+          if (code[e] === '\\') e++;
+          e++;
+        }
+        if (e < n && code[e] === q) e++;
+      }
+      let s = i;
+      if (i > 0 && 'frb'.includes(code[i-1]) && (i < 2 || !/[a-zA-Z0-9_]/.test(code[i-2]))) {
+        s = i - 1;
+        if (r.length > 0 && r.endsWith(escHL(code[i-1]))) {
+          r = r.slice(0, r.length - escHL(code[i-1]).length);
+        }
+      }
+      r += '<span class="hl-str">' + escHL(code.slice(s, e)) + '</span>';
+      i = e;
+      continue;
+    }
+    // Numbers
+    if (/[0-9]/.test(code[i]) && (i === 0 || !/[a-zA-Z0-9_]/.test(code[i-1]))) {
+      let e = i;
+      while (e < n && /[0-9.]/.test(code[e])) e++;
+      r += '<span class="hl-num">' + escHL(code.slice(i, e)) + '</span>';
+      i = e;
+      continue;
+    }
+    // Identifiers
+    if (/[a-zA-Z_]/.test(code[i])) {
+      let e = i;
+      while (e < n && /[a-zA-Z0-9_]/.test(code[e])) e++;
+      const w = code.slice(i, e);
+      if (HL_KEYWORDS.has(w)) {
+        r += '<span class="hl-kw">' + escHL(w) + '</span>';
+      } else if (HL_BUILTINS.has(w) && e < n && code[e] === '(') {
+        r += '<span class="hl-fn">' + escHL(w) + '</span>';
+      } else {
+        r += escHL(w);
+      }
+      i = e;
+      continue;
+    }
+    // Other
+    r += escHL(code[i]);
+    i++;
+  }
+  return r;
 }
 
 function updateSyntaxHighlight() {
