@@ -751,12 +751,13 @@ button{cursor:pointer}
   padding:16px 20px 16px 48px;
   font-family:'Fira Code',"Cascadia Code","Source Code Pro",monospace;
   font-size:.88rem;line-height:1.7;
-  color:transparent;
+  color:#e4e4e7;
   white-space:pre-wrap;
   word-wrap:break-word;
   overflow:hidden;
   pointer-events:none;
-  tab-size:4;
+  tab-size:4;-moz-tab-size:4;
+  letter-spacing:normal;word-spacing:normal;
 }
 .hl-kw{color:#c084fc}
 .hl-str{color:#86efac}
@@ -769,14 +770,18 @@ button{cursor:pointer}
   padding:16px 20px 16px 48px;
   font-family:'Fira Code',"Cascadia Code","Source Code Pro",monospace;
   font-size:.88rem;line-height:1.7;
-  color:#e4e4e7;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
   background:transparent;
   resize:none;border:none;outline:none;
-  tab-size:4;
+  tab-size:4;-moz-tab-size:4;
   min-height:150px;
   caret-color:#e4e4e7;
   position:relative;
   z-index:1;
+  white-space:pre-wrap;
+  word-wrap:break-word;
+  letter-spacing:normal;word-spacing:normal;
 }
 .code-editor::placeholder{color:#3f3f46}
 
