@@ -841,12 +841,13 @@ button{cursor:pointer}
 /* lesson nav */
 .lesson-nav{
   display:flex;align-items:center;justify-content:space-between;
-  padding:12px 16px;
+  padding:8px 12px;
   background:#18181b;border-top:1px solid #27272a;
-  gap:8px;
+  gap:6px;
   margin-top:auto;
 }
-.lesson-nav-center{display:flex;gap:8px}
+.lesson-nav .btn{padding:6px 14px;font-size:.82rem;border-radius:8px}
+.lesson-nav-center{display:flex;gap:6px}
 .lesson-nav-sub{
   text-align:center;padding:8px;
   background:#18181b;border-top:1px solid #27272a;
