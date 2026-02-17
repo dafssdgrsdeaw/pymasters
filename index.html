@@ -103,7 +103,7 @@
     <button class="btn btn-p btn-l" id="heroCTA" onclick="heroCTAClick()">🚀 学習を始める</button>
   </div>
 
-  <div class="ad-slot"><p>広告エリア（AdSense配置位置）</p></div>
+  <div class="ad-slot" style="display:none"><p>広告エリア（AdSense配置位置）</p></div>
 
   <div class="courses-sec" id="csec">
     <h3>📚 無料コース</h3>
@@ -118,7 +118,7 @@
     </div>
   </div>
 
-  <div class="ad-slot"><p>広告エリア（AdSense配置位置）</p></div>
+  <div class="ad-slot" style="display:none"><p>広告エリア（AdSense配置位置）</p></div>
 
   <footer class="ftr">
     <div class="ftr-links">
@@ -126,7 +126,7 @@
       <a href="#" onclick="nav('privacy');return false">プライバシーポリシー</a>
       <a href="#" onclick="nav('law');return false">特定商取引法に基づく表記</a>
     </div>
-    <small>&copy; 2025 PyMasters. All rights reserved.</small>
+    <small>&copy; 2026 PyMasters. All rights reserved.</small>
   </footer>
 </div>
 
@@ -161,6 +161,7 @@
         <div class="ep-actions">
           <button class="btn btn-s" onclick="rstCode()">↺ リセット</button>
           <button class="btn btn-p" onclick="runCode()">▶ 実行</button>
+          <button class="btn btn-g" onclick="chkAns()">✓ 答え合わせ</button>
         </div>
       </div>
       <div class="exercise-inst" id="eiEl"></div>
@@ -183,20 +184,12 @@
       </div>
       <div class="lesson-nav">
         <button class="btn btn-o" id="pvBtn" onclick="pvL()">← 前へ</button>
-        <div class="lesson-nav-center">
-          <button class="btn btn-g" onclick="chkAns()">✓ 答え合わせ</button>
-          <button class="btn btn-o" id="showAnsBtn" onclick="showAnswer()" style="display:none">👁 答えを見る</button>
-        </div>
+        <button class="btn btn-o" id="showAnsBtn" onclick="showAnswer()" style="display:none">👁 答えを見る</button>
         <button class="btn btn-o" id="nxBtn" onclick="nxL()">次へ →</button>
       </div>
       <div class="lesson-nav-sub">
         <a href="#" onclick="openCourse(cCrs.id);return false">📚 コース一覧に戻る</a>
       </div>
-    </div>
-    <!-- Mobile fixed action buttons -->
-    <div class="mobile-fixed-actions" id="mobileActions">
-      <button class="btn btn-p mobile-action-btn" onclick="runCode()">▶ 実行</button>
-      <button class="btn btn-g mobile-action-btn" onclick="chkAns()">✓ 答え合わせ</button>
     </div>
   </div>
 </div>
@@ -232,10 +225,10 @@
     <div class="back-link" onclick="nav('home')">← トップに戻る</div>
     <h2>特定商取引法に基づく表記</h2>
     <table class="law-table">
-      <tr><td class="law-th">販売業者</td><td>（氏名または法人名を記載）</td></tr>
-      <tr><td class="law-th">運営責任者</td><td>（氏名を記載）</td></tr>
+      <tr><td class="law-th">販売業者</td><td>坂本 大就</td></tr>
+      <tr><td class="law-th">運営責任者</td><td>坂本 大就</td></tr>
       <tr><td class="law-th">所在地</td><td>請求があった場合に遅滞なく開示します</td></tr>
-      <tr><td class="law-th">連絡先</td><td>（メールアドレスを記載）</td></tr>
+      <tr><td class="law-th">連絡先</td><td>daijyu150m@gmail.com</td></tr>
       <tr><td class="law-th">販売価格</td><td>各サービスページに表示する価格（税込）</td></tr>
       <tr><td class="law-th">支払方法</td><td>クレジットカード（Stripe経由）</td></tr>
       <tr><td class="law-th">引渡し時期</td><td>決済完了後、即時利用可能</td></tr>
