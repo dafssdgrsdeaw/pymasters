@@ -9,6 +9,13 @@
 <meta property="og:title" content="PyMasters - Python学習プラットフォーム">
 <meta property="og:description" content="ブラウザだけでPythonを学べる無料プログラミング学習サイト">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://dafssdgrsdeaw.github.io/pymasters/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PyMasters - Python学習プラットフォーム">
+<meta name="twitter:description" content="ブラウザだけでPythonを学べる無料プログラミング学習サイト">
+<meta name="twitter:image" content="https://dafssdgrsdeaw.github.io/pymasters/ogp.png">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-TF5LHTEM7G"></script>
 <script>
@@ -19,13 +26,16 @@
 </script>
 <!-- Google AdSense: 自分のIDに置き換えてください -->
 <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
-<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<!-- Pyodide: lazy loaded when entering lesson page -->
+<!-- Google Fonts: Fira Code for editor -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Loading -->
-<div class="lo" id="lo"><div class="spinner"></div><div class="lo-text">🐍 Python環境を準備中...</div></div>
+<!-- Pyodide Loading (shown in editor area, not full page) -->
 
 <!-- ===== HEADER ===== -->
 <header class="hdr">
@@ -89,7 +99,8 @@
       <div class="pbar"><div class="pbar-f" id="oP" style="width:0%"></div></div>
       <div class="ptxt" id="oPT">0 / 0 レッスン完了</div>
     </div>
-    <button class="btn btn-p btn-l" onclick="document.getElementById('csec').scrollIntoView({behavior:'smooth'})">🚀 学習を始める</button>
+    <div class="next-recommend" id="nextRecommend" style="display:none"></div>
+    <button class="btn btn-p btn-l" id="heroCTA" onclick="heroCTAClick()">🚀 学習を始める</button>
   </div>
 
   <div class="ad-slot"><p>広告エリア（AdSense配置位置）</p></div>
@@ -132,9 +143,21 @@
 <div class="pg" id="pg-lesson">
   <div class="lesson-page">
     <div class="lesson-content" id="lcEl"></div>
-    <div class="editor-panel">
+    <div class="editor-panel" id="editorPanel">
+      <!-- Pyodide loading overlay (shown over editor only) -->
+      <div class="pyodide-loading" id="pyodideLoading" style="display:none">
+        <div class="pyodide-loading-inner">
+          <div class="pyodide-spinner"></div>
+          <div class="pyodide-loading-text">🐍 Python環境を準備中…</div>
+          <div class="pyodide-progress-bar"><div class="pyodide-progress-fill" id="pyodideProgressFill"></div></div>
+          <div class="pyodide-progress-text" id="pyodideProgressText">0%</div>
+          <div class="pyodide-cache-note">初回は少し時間がかかりますが、2回目以降はキャッシュで高速です</div>
+        </div>
+      </div>
       <div class="ep-header">
-        <h3>💻 VS Code風エディタ <span class="ep-note">(Windows)</span></h3>
+        <div class="ep-file-tab">
+          <div class="ep-tab active">🐍 lesson.py</div>
+        </div>
         <div class="ep-actions">
           <button class="btn btn-s" onclick="rstCode()">↺ リセット</button>
           <button class="btn btn-p" onclick="runCode()">▶ 実行</button>
@@ -142,9 +165,11 @@
       </div>
       <div class="exercise-inst" id="eiEl"></div>
       <div class="editor-wrapper">
+        <div class="editor-highlight-layer" id="edHL" aria-hidden="true"></div>
+        <div class="editor-line-numbers" id="edLN" aria-hidden="true"></div>
         <textarea class="code-editor" id="edEl" spellcheck="false"></textarea>
       </div>
-      <div class="editor-status">
+      <div class="editor-status editor-status-pc">
         <span>Enter: 実行</span>
         <span>Shift+Enter: 改行</span>
         <span>Ctrl+/: コメント</span>
@@ -164,6 +189,14 @@
         </div>
         <button class="btn btn-o" id="nxBtn" onclick="nxL()">次へ →</button>
       </div>
+      <div class="lesson-nav-sub">
+        <a href="#" onclick="openCourse(cCrs.id);return false">📚 コース一覧に戻る</a>
+      </div>
+    </div>
+    <!-- Mobile fixed action buttons -->
+    <div class="mobile-fixed-actions" id="mobileActions">
+      <button class="btn btn-p mobile-action-btn" onclick="runCode()">▶ 実行</button>
+      <button class="btn btn-g mobile-action-btn" onclick="chkAns()">✓ 答え合わせ</button>
     </div>
   </div>
 </div>
@@ -221,6 +254,7 @@
     <p id="okMsg">完璧です！</p>
     <div class="xp-gain" id="xpGT">+50 XP</div>
     <button class="btn btn-p btn-l" onclick="clsMoNx()">次のレッスンへ →</button>
+    <div style="margin-top:8px"><a href="#" class="modal-sub-link" onclick="clsMoBack();return false">📚 コース一覧に戻る</a></div>
   </div>
 </div>
 
@@ -231,7 +265,8 @@
     <h3 id="clearTitle">コースクリア！</h3>
     <p id="clearMsg">おめでとうございます！</p>
     <div class="clear-praise" id="clearPraise"></div>
-    <button class="btn btn-p btn-l" onclick="clsClear()">🏠 ホームに戻る</button>
+    <button class="btn btn-p btn-l" id="nextCourseBtn" onclick="goNextCourse()" style="display:none">🚀 次のおすすめコースへ</button>
+    <button class="btn btn-o btn-l" onclick="clsClear()" style="margin-top:10px">🏠 ホームに戻る</button>
   </div>
 </div>
 
