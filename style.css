@@ -1089,9 +1089,9 @@ button{cursor:pointer}
   /* Mobile fixed buttons visible */
   .mobile-fixed-actions{display:flex}
 
-  /* Add bottom padding for fixed buttons */
-  .editor-panel{padding-bottom:56px}
-  .lesson-page{padding-bottom:56px}
+  /* Editor and lesson adjustments */
+  .editor-panel{padding-bottom:0}
+  .lesson-page{padding-bottom:0}
 
   .lesson-nav{padding:10px 12px;gap:6px;flex-wrap:wrap;justify-content:center}
   .lesson-nav .btn{font-size:.8rem;padding:8px 12px}
