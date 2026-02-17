@@ -1,0 +1,91 @@
+=====================================
+  PyMasters v3 - 公開 & 収益化ガイド
+=====================================
+
+■ ファイル構成
+  v3/
+  ├── index.html         ← メインHTML
+  ├── style.css          ← デザイン
+  ├── app.js             ← アプリロジック
+  ├── courses.js         ← 全コースデータ
+  ├── glossary.js        ← 用語辞書データ
+  ├── 404.html           ← 404ページ
+  ├── robots.txt         ← SEO用
+  ├── sitemap.xml        ← SEO用
+  └── DEPLOY_GUIDE.txt   ← このファイル
+
+=====================================
+  v2→v3 の主な改善点
+=====================================
+・解説が大幅に丁寧に（初心者目線で書き直し）
+・用語クリックでポップアップ辞書表示
+・ホームに用語検索バー追加
+・コードエディタにVSC風ショートカット搭載
+  - Enter: コード実行
+  - Shift+Enter: 改行
+  - Ctrl+/: コメント切り替え
+  - Alt+↑↓: 行移動
+  - Ctrl+D: 行/選択の複製
+  - Ctrl+Shift+K: 行削除
+  - Tab/Shift+Tab: インデント
+・答え合わせが柔軟に（空白・書き方の違いを許容）
+・「答えを見る」ボタン追加（2回不正解後に表示）
+・コース大幅追加（12コース・50+レッスン）
+・コースクリア演出（称賛メッセージ＋ホーム誘導）
+・PRO版ちょい見せ機能（最初のレッスンだけ表示）
+・コピペ可能なコードスニペット
+・コンフェッティ（紙吹雪）アニメーション
+
+=====================================
+  STEP 1: 難読化
+=====================================
+
+1. オンラインツール（簡単）:
+   https://obfuscator.io/ で app.js を難読化
+   設定:
+   - Compact Code: ON
+   - Control Flow Flattening: ON
+   - String Array: ON
+   - String Array Encoding: base64
+
+2. CSSの圧縮:
+   https://www.toptal.com/developers/cssminifier
+   で style.css を圧縮
+
+3. 難読化したファイルで元ファイルを置き換え
+
+=====================================
+  STEP 2: GitHub Pages で公開
+=====================================
+
+1. GitHubにリポジトリ「pymasters」を作成（Public）
+2. v3フォルダの中身をアップロード
+3. Settings → Pages → main / root → Save
+4. 数分後に公開: https://あなたのID.github.io/pymasters/
+
+=====================================
+  STEP 3: AdSense の設定
+=====================================
+
+1. Google AdSense に申請: https://www.google.com/adsense/start/
+2. 審査通過後、index.html のAdSenseコメントを有効化し自分のIDに変更
+3. 広告ユニット作成 → ad-slot の箇所にコードを貼り付け
+
+=====================================
+  STEP 4: Stripe（有料課金）
+=====================================
+
+1. Stripe 登録: https://stripe.com/jp
+2. Payment Links で決済ページ作成
+3. PRO ボタンの onclick をStripeリンクに変更
+
+=====================================
+  STEP 5: 公開後チェックリスト
+=====================================
+
+□ Google Search Console に登録・サイトマップ送信
+□ robots.txt / sitemap.xml のURLを実際のURLに修正
+□ 利用規約の個人情報を記入
+□ 特定商取引法の表記を記入（有料販売時必須）
+□ AdSense 審査申請
+□ SNSで宣伝（Twitter, Qiita, Zenn等）

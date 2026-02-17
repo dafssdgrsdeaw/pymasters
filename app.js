@@ -822,6 +822,10 @@ function setupEditor() {
 
 // ===== INIT =====
 async function init() {
+  // PROユーザーなら広告非表示（将来Stripe連携で判定）
+  const p = gP();
+  if (p.pro) document.body.classList.add('is-pro');
+
   updateUI();
   render();
   setupEditor();
