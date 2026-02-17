@@ -2,11 +2,41 @@
 
 // ===== STATE =====
 let py = null;
+let pyLoading = false;
 let cCrs = null;    // current course
 let cLi = 0;        // current lesson index
 let hIdx = 0;       // hint index
 let initC = '';      // initial code for reset
 let checkAttempts = 0; // track check attempts for showing answer btn
+const isMobile = () => window.innerWidth <= 768;
+
+// ===== COURSE ORDER (for nextCourse navigation) =====
+const COURSE_ORDER = [
+  'py-start','py-basics','py-control','py-func','py-ds',
+  'py-clean','py-error','py-oop',
+  'py-janken','py-calc','py-data-auto',
+  'shortcut-master'
+];
+
+// ===== ERROR TRANSLATION =====
+function translateError(msg) {
+  const translations = {
+    'SyntaxError': '⚠️ 書き方にミスがあります（SyntaxError）',
+    'NameError': '⚠️ 定義されていない名前を使っています（NameError）',
+    'TypeError': '⚠️ データの型が合っていません（TypeError）',
+    'IndentationError': '⚠️ インデント（字下げ）がずれています（IndentationError）',
+    'ValueError': '⚠️ 値が正しくありません（ValueError）',
+    'ZeroDivisionError': '⚠️ 0で割ることはできません（ZeroDivisionError）',
+    'IndexError': '⚠️ リストの範囲外にアクセスしています（IndexError）',
+    'KeyError': '⚠️ 辞書に存在しないキーです（KeyError）',
+    'AttributeError': '⚠️ そのメソッド/属性は存在しません（AttributeError）',
+    'ImportError': '⚠️ モジュールの読み込みに失敗しました（ImportError）',
+  };
+  for (const [key, value] of Object.entries(translations)) {
+    if (msg.includes(key)) return value + '\n\n元のエラー: ' + msg;
+  }
+  return msg;
+}
 
 // ===== PROGRESS (localStorage) =====
 function gP() {
@@ -90,11 +120,129 @@ function esc(t) {
   return d.innerHTML;
 }
 
+// ===== PYODIDE LAZY LOADING =====
+let pyodidePromise = null;
+
+async function ensurePyodide() {
+  if (py) return py;
+  if (pyodidePromise) return pyodidePromise;
+
+  pyodidePromise = (async () => {
+    // Show loading in editor panel
+    const loadingEl = document.getElementById('pyodideLoading');
+    if (loadingEl) loadingEl.style.display = 'flex';
+
+    // Load the Pyodide script if not already loaded
+    if (typeof loadPyodide === 'undefined') {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    // Simulate progress
+    let progress = 0;
+    const progressFill = document.getElementById('pyodideProgressFill');
+    const progressText = document.getElementById('pyodideProgressText');
+    const progressInterval = setInterval(() => {
+      if (progress < 85) {
+        progress += Math.random() * 8 + 2;
+        if (progress > 85) progress = 85;
+        if (progressFill) progressFill.style.width = progress + '%';
+        if (progressText) progressText.textContent = Math.round(progress) + '%';
+      }
+    }, 300);
+
+    try {
+      py = await loadPyodide();
+      clearInterval(progressInterval);
+      if (progressFill) progressFill.style.width = '100%';
+      if (progressText) progressText.textContent = '100%';
+      setTimeout(() => {
+        if (loadingEl) loadingEl.style.display = 'none';
+      }, 400);
+      return py;
+    } catch (e) {
+      clearInterval(progressInterval);
+      const loadingText = document.querySelector('.pyodide-loading-text');
+      if (loadingText) loadingText.textContent = 'Python環境の読み込みに失敗しました。ページを再読込してください。';
+      console.error('Pyodide error:', e);
+      pyodidePromise = null;
+      throw e;
+    }
+  })();
+
+  return pyodidePromise;
+}
+
 // ===== NAVIGATION =====
 function nav(p) {
   document.querySelectorAll('.pg').forEach(e => e.classList.remove('on'));
   document.getElementById('pg-' + p).classList.add('on');
   window.scrollTo(0, 0);
+
+  // Show/hide mobile fixed actions
+  const mobileActions = document.getElementById('mobileActions');
+  if (mobileActions) {
+    mobileActions.style.display = (p === 'lesson') ? 'flex' : 'none';
+  }
+}
+
+// ===== SMART CTA =====
+function heroCTAClick() {
+  const p = gP();
+  if (p.done.length === 0) {
+    // First-time visitor: go to first lesson of first course
+    openLesson('py-start', 0);
+  } else {
+    // Returning user: find next incomplete lesson
+    const next = findNextLesson(p);
+    if (next) {
+      openLesson(next.courseId, next.lessonIndex);
+    } else {
+      document.getElementById('csec').scrollIntoView({behavior:'smooth'});
+    }
+  }
+}
+
+function findNextLesson(p) {
+  for (const cid of COURSE_ORDER) {
+    const c = COURSES.find(x => x.id === cid);
+    if (!c || !c.free) continue;
+    for (let i = 0; i < c.lessons.length; i++) {
+      if (!p.done.includes(c.lessons[i].id)) {
+        return { courseId: c.id, lessonIndex: i };
+      }
+    }
+  }
+  return null;
+}
+
+function updateHeroCTA() {
+  const p = gP();
+  const btn = document.getElementById('heroCTA');
+  const rec = document.getElementById('nextRecommend');
+  if (!btn) return;
+
+  if (p.done.length === 0) {
+    btn.textContent = '🚀 最初のレッスンを始める';
+  } else {
+    btn.textContent = '📖 続きから学習する';
+    // Show next recommendation
+    const next = findNextLesson(p);
+    if (next && rec) {
+      const c = COURSES.find(x => x.id === next.courseId);
+      const l = c.lessons[next.lessonIndex];
+      rec.style.display = 'block';
+      rec.innerHTML = `<div class="next-rec-inner">
+        <span class="next-rec-label">次のおすすめ:</span>
+        <a href="#" onclick="openLesson('${next.courseId}',${next.lessonIndex});return false" class="next-rec-link">${c.icon} ${c.title} › ${l.title}</a>
+      </div>`;
+    }
+  }
 }
 
 // ===== RENDER HOME =====
@@ -103,18 +251,29 @@ function render() {
   let totalL = 0, totalD = 0;
   const freeCards = [], proCards = [];
 
+  // Course card gradient map
+  const gradMap = {
+    b: 'cc-grad-beginner',
+    i: 'cc-grad-intermediate',
+    a: 'cc-grad-advanced',
+    s: 'cc-grad-skill'
+  };
+
   COURSES.forEach(c => {
     const done = c.lessons.filter(l => p.done.includes(l.id)).length;
     totalL += c.lessons.length;
     totalD += done;
     const pct = c.lessons.length ? (done / c.lessons.length * 100) : 0;
+    const pctRound = Math.round(pct);
     const lvMap = { b: 'lv-b', i: 'lv-i', a: 'lv-a', s: 'lv-s' };
     const lvLabel = { b: '初心者', i: '中級', a: '上級', s: 'スキル' };
+    const isComplete = pct === 100;
     const clickAction = c.free
       ? `openCourse('${c.id}')`
       : `previewPro('${c.id}')`;
 
-    const card = `<div class="course-card ${c.free ? '' : 'locked'}" onclick="${clickAction}">
+    const card = `<div class="course-card ${c.free ? '' : 'locked'} ${gradMap[c.level] || ''}" onclick="${clickAction}">
+      ${isComplete ? '<div class="cc-clear-badge">✅ クリア済み</div>' : ''}
       <div class="cc-icon">${c.icon}</div>
       <h4>${c.title}</h4>
       <p>${c.desc}</p>
@@ -123,6 +282,7 @@ function render() {
         <span class="cc-cnt">${c.lessons.length}レッスン</span>
       </div>
       <div class="cc-pb"><div class="cc-pf" style="width:${pct}%"></div></div>
+      ${pctRound > 0 ? `<div class="cc-pct">${pctRound}% 完了</div>` : ''}
     </div>`;
 
     if (c.free) freeCards.push(card); else proCards.push(card);
@@ -133,6 +293,8 @@ function render() {
   const overall = totalL ? (totalD / totalL * 100) : 0;
   document.getElementById('oP').style.width = overall + '%';
   document.getElementById('oPT').textContent = `${totalD} / ${totalL} レッスン完了`;
+
+  updateHeroCTA();
 }
 
 // ===== COURSE DETAIL =====
@@ -172,9 +334,13 @@ function openLesson(cid, li) {
   const l = c.lessons[li];
   const el = document.getElementById('lcEl');
 
+  // Estimated time (rough: 5min per lesson)
+  const estTime = l.xp <= 50 ? 3 : l.xp <= 80 ? 5 : 8;
+
   let h = `<div class="back-link" onclick="openCourse('${cid}')">← ${c.title}</div>`;
   h += `<div class="lesson-breadcrumb">${c.title} › レッスン ${li + 1}/${c.lessons.length}</div>`;
   h += `<h2 class="lesson-title">${l.title}</h2>`;
+  h += `<div class="lesson-time">⏱ 約${estTime}分</div>`;
 
   l.content.forEach(b => {
     if (b.type === 'text') {
@@ -190,6 +356,9 @@ function openLesson(cid, li) {
     }
   });
 
+  // CTA to scroll to editor
+  h += `<div class="scroll-to-editor-cta" onclick="scrollToEditor()">💻 実際に書いてみよう ↓</div>`;
+
   el.innerHTML = h;
 
   // Bind term clicks
@@ -200,7 +369,8 @@ function openLesson(cid, li) {
   // Exercise
   const ex = l.exercise;
   document.getElementById('eiEl').innerHTML = `<strong>📝 演習:</strong> ${ex.instruction}`;
-  document.getElementById('edEl').value = ex.initialCode;
+  const edEl = document.getElementById('edEl');
+  edEl.value = ex.initialCode;
   initC = ex.initialCode;
   document.getElementById('opEl').textContent = 'ここに実行結果が表示されます';
   document.getElementById('opEl').className = 'output-content';
@@ -213,12 +383,74 @@ function openLesson(cid, li) {
   document.getElementById('nxBtn').disabled = li >= c.lessons.length - 1;
 
   nav('lesson');
-  // Focus editor
-  setTimeout(() => document.getElementById('edEl').focus(), 300);
+
+  // Update editor UI
+  updateLineNumbers();
+  updateSyntaxHighlight();
+
+  // Trigger Pyodide lazy load
+  ensurePyodide();
+
+  // Focus editor (PC only)
+  if (!isMobile()) {
+    setTimeout(() => edEl.focus(), 300);
+  }
+}
+
+function scrollToEditor() {
+  const el = document.getElementById('editorPanel');
+  if (el) el.scrollIntoView({behavior:'smooth'});
 }
 
 function copyToEditor(enc) {
-  document.getElementById('edEl').value = decodeURIComponent(enc);
+  const edEl = document.getElementById('edEl');
+  edEl.value = decodeURIComponent(enc);
+  updateLineNumbers();
+  updateSyntaxHighlight();
+}
+
+// ===== SYNTAX HIGHLIGHTING =====
+function highlightCode(code) {
+  let escaped = esc(code);
+  // Strings (double and single quoted)
+  escaped = escaped.replace(/((&quot;|&#039;|"|')(.*?)(\2))/g, '<span class="hl-str">$1</span>');
+  // f-strings
+  escaped = escaped.replace(/\b(f)(&quot;|&#039;|"|')/g, '<span class="hl-str">$1$2');
+  // Comments
+  escaped = escaped.replace(/(#.*?)$/gm, '<span class="hl-cmt">$1</span>');
+  // Keywords
+  const keywords = ['def','class','if','elif','else','for','while','return','import','from','in','not','and','or','True','False','None','try','except','finally','with','as','pass','break','continue','lambda','raise','yield','global','nonlocal'];
+  keywords.forEach(kw => {
+    escaped = escaped.replace(new RegExp('\\b(' + kw + ')\\b', 'g'), '<span class="hl-kw">$1</span>');
+  });
+  // Built-in functions
+  const builtins = ['print','len','range','type','int','float','str','bool','list','dict','set','tuple','input','sum','max','min','abs','round','sorted','enumerate','zip','map','filter','open','super','isinstance','hasattr','getattr','setattr'];
+  builtins.forEach(fn => {
+    escaped = escaped.replace(new RegExp('\\b(' + fn + ')(\\()', 'g'), '<span class="hl-fn">$1</span>$2');
+  });
+  // Numbers
+  escaped = escaped.replace(/\b(\d+\.?\d*)\b/g, '<span class="hl-num">$1</span>');
+  return escaped;
+}
+
+function updateSyntaxHighlight() {
+  const edEl = document.getElementById('edEl');
+  const hlEl = document.getElementById('edHL');
+  if (!edEl || !hlEl) return;
+  const code = edEl.value;
+  hlEl.innerHTML = highlightCode(code) + '\n';
+  // Sync scroll
+  hlEl.scrollTop = edEl.scrollTop;
+  hlEl.scrollLeft = edEl.scrollLeft;
+}
+
+function updateLineNumbers() {
+  const edEl = document.getElementById('edEl');
+  const lnEl = document.getElementById('edLN');
+  if (!edEl || !lnEl) return;
+  const lines = edEl.value.split('\n');
+  lnEl.innerHTML = lines.map((_, i) => `<div class="ln">${i + 1}</div>`).join('');
+  lnEl.scrollTop = edEl.scrollTop;
 }
 
 // ===== TERM CLICK (GLOSSARY POPUP) =====
@@ -426,8 +658,10 @@ async function runGlossaryExample(termId) {
   if (!outputEl) return;
 
   if (!py) {
-    outputEl.innerHTML = '<span class="std-output-err">⏳ Python環境を読み込み中…しばらくお待ちください</span>';
-    return;
+    outputEl.innerHTML = '<span class="std-output-running">⏳ Python環境を読み込み中…</span>';
+    try {
+      await ensurePyodide();
+    } catch { return; }
   }
 
   outputEl.innerHTML = '<span class="std-output-running">⏳ 実行中…</span>';
@@ -439,7 +673,7 @@ async function runGlossaryExample(termId) {
     const stderr = py.runPython('sys.stderr.getvalue()');
 
     if (stderr) {
-      outputEl.innerHTML = `<div class="std-output-label">⚠️ エラー:</div><pre class="std-output-code std-output-err">${stderr}</pre>`;
+      outputEl.innerHTML = `<div class="std-output-label">⚠️ エラー:</div><pre class="std-output-code std-output-err">${translateError(stderr)}</pre>`;
     } else if (stdout.trim()) {
       outputEl.innerHTML = `<div class="std-output-label">📤 実行結果:</div><pre class="std-output-code">${stdout.trimEnd()}</pre>`;
     } else {
@@ -448,7 +682,7 @@ async function runGlossaryExample(termId) {
   } catch (e) {
     const lines = String(e.message || e).split('\n').filter(x => x.trim());
     const errMsg = lines.pop() || String(e);
-    outputEl.innerHTML = `<div class="std-output-label">⚠️ エラー:</div><pre class="std-output-code std-output-err">${errMsg}</pre>`;
+    outputEl.innerHTML = `<div class="std-output-label">⚠️ エラー:</div><pre class="std-output-code std-output-err">${translateError(errMsg)}</pre>`;
   }
 }
 
@@ -467,7 +701,11 @@ async function runCode() {
   const o = document.getElementById('opEl');
 
   if (!code.trim()) { o.textContent = 'コードを入力してください'; o.className = 'output-content err'; return; }
-  if (!py) { o.textContent = 'Python環境を読み込み中…しばらくお待ちください'; return; }
+  if (!py) {
+    o.textContent = '⏳ Python環境を読み込み中…しばらくお待ちください';
+    o.className = 'output-content';
+    try { await ensurePyodide(); } catch { return; }
+  }
 
   o.textContent = '実行中…';
   o.className = 'output-content';
@@ -477,11 +715,17 @@ async function runCode() {
     py.runPython(code);
     const stdout = py.runPython('sys.stdout.getvalue()');
     const stderr = py.runPython('sys.stderr.getvalue()');
-    if (stderr) { o.textContent = stderr; o.className = 'output-content err'; }
-    else { o.textContent = stdout || '(出力なし)'; o.className = 'output-content'; }
+    if (stderr) {
+      o.innerHTML = '<span class="output-err-icon">❌</span> ' + esc(translateError(stderr));
+      o.className = 'output-content err';
+    } else {
+      o.innerHTML = '<span class="output-ok-icon">✅</span> ' + esc(stdout || '(出力なし)');
+      o.className = 'output-content';
+    }
   } catch (e) {
     const lines = String(e.message || e).split('\n').filter(x => x.trim());
-    o.textContent = lines.pop() || String(e);
+    const errMsg = lines.pop() || String(e);
+    o.innerHTML = '<span class="output-err-icon">❌</span> ' + esc(translateError(errMsg));
     o.className = 'output-content err';
   }
 }
@@ -503,7 +747,11 @@ async function chkAns() {
   const ex = l.exercise;
 
   if (!code.trim()) { o.textContent = 'コードを入力してください'; o.className = 'output-content err'; return; }
-  if (!py) { o.textContent = 'Python環境を読み込み中…'; return; }
+  if (!py) {
+    o.textContent = '⏳ Python環境を読み込み中…';
+    o.className = 'output-content';
+    try { await ensurePyodide(); } catch { return; }
+  }
 
   checkAttempts++;
 
@@ -514,7 +762,7 @@ async function chkAns() {
     const stderr = py.runPython('sys.stderr.getvalue()');
 
     if (stderr) {
-      o.textContent = stderr;
+      o.innerHTML = '<span class="output-err-icon">❌</span> ' + esc(translateError(stderr));
       o.className = 'output-content err';
       if (checkAttempts >= 2) document.getElementById('showAnsBtn').style.display = '';
       return;
@@ -534,7 +782,7 @@ async function chkAns() {
 
     if (outputMatch && keywordMatch) {
       // CORRECT!
-      o.textContent = stdout.trim();
+      o.innerHTML = '<span class="output-ok-icon">✅</span> ' + esc(stdout.trim());
       o.className = 'output-content ok';
 
       const p = gP();
@@ -579,7 +827,8 @@ async function chkAns() {
     }
   } catch (e) {
     const lines = String(e.message || e).split('\n').filter(x => x.trim());
-    o.textContent = 'エラー: ' + (lines.pop() || String(e));
+    const errMsg = lines.pop() || String(e);
+    o.innerHTML = '<span class="output-err-icon">❌</span> ' + esc(translateError(errMsg));
     o.className = 'output-content err';
     if (checkAttempts >= 2) document.getElementById('showAnsBtn').style.display = '';
   }
@@ -590,6 +839,8 @@ function showAnswer() {
   const l = cCrs.lessons[cLi];
   if (l.exercise.answer) {
     document.getElementById('edEl').value = l.exercise.answer;
+    updateLineNumbers();
+    updateSyntaxHighlight();
     document.getElementById('opEl').textContent = '💡 模範解答をエディタに表示しました。実行して確認してみましょう！';
     document.getElementById('opEl').className = 'output-content';
   }
@@ -605,13 +856,58 @@ function showCourseClear() {
   document.getElementById('clearTitle').textContent = `🎊 ${cCrs.title} クリア！`;
   document.getElementById('clearMsg').textContent = 'おめでとうございます！';
   document.getElementById('clearPraise').textContent = praises[Math.floor(Math.random() * praises.length)];
+
+  // Show next course button if applicable
+  const nextBtn = document.getElementById('nextCourseBtn');
+  const nc = getNextCourse(cCrs.id);
+  if (nc && nextBtn) {
+    nextBtn.textContent = `🚀 次のコース: ${nc.icon} ${nc.title}`;
+    nextBtn.style.display = '';
+  } else if (nextBtn) {
+    nextBtn.style.display = 'none';
+  }
+
   document.getElementById('clearMo').classList.add('on');
+}
+
+function getNextCourse(currentId) {
+  // Use nextCourse property if defined
+  const current = COURSES.find(x => x.id === currentId);
+  if (current && current.nextCourse) {
+    const nc = COURSES.find(x => x.id === current.nextCourse);
+    if (nc && nc.free) return nc;
+  }
+  // Fallback to COURSE_ORDER
+  const idx = COURSE_ORDER.indexOf(currentId);
+  if (idx >= 0 && idx < COURSE_ORDER.length - 1) {
+    const nextId = COURSE_ORDER[idx + 1];
+    const nc = COURSES.find(x => x.id === nextId);
+    if (nc && nc.free) return nc;
+  }
+  return null;
+}
+
+function goNextCourse() {
+  document.getElementById('clearMo').classList.remove('on');
+  const nc = getNextCourse(cCrs.id);
+  if (nc) {
+    render();
+    openCourse(nc.id);
+  } else {
+    clsClear();
+  }
 }
 
 function clsClear() {
   document.getElementById('clearMo').classList.remove('on');
   render();
   nav('home');
+}
+
+function clsMoBack() {
+  document.getElementById('okMo').classList.remove('on');
+  render();
+  openCourse(cCrs.id);
 }
 
 // ===== CONFETTI =====
@@ -634,6 +930,8 @@ function rstCode() {
   document.getElementById('edEl').value = initC;
   document.getElementById('opEl').textContent = 'ここに実行結果が表示されます';
   document.getElementById('opEl').className = 'output-content';
+  updateLineNumbers();
+  updateSyntaxHighlight();
 }
 
 // ===== HINTS =====
@@ -690,12 +988,40 @@ function closePremium() {
 function setupEditor() {
   const editor = document.getElementById('edEl');
 
+  // Sync scroll between textarea and highlight/line-numbers
+  editor.addEventListener('scroll', () => {
+    const hlEl = document.getElementById('edHL');
+    const lnEl = document.getElementById('edLN');
+    if (hlEl) { hlEl.scrollTop = editor.scrollTop; hlEl.scrollLeft = editor.scrollLeft; }
+    if (lnEl) { lnEl.scrollTop = editor.scrollTop; }
+  });
+
+  // Update on input
+  editor.addEventListener('input', () => {
+    updateLineNumbers();
+    updateSyntaxHighlight();
+  });
+
   editor.addEventListener('keydown', (e) => {
     const start = editor.selectionStart;
     const end = editor.selectionEnd;
     const val = editor.value;
 
-    // Enter = Run code (without Shift)
+    // Mobile: Enter = newline (not run)
+    if (isMobile()) {
+      // Tab = Insert 4 spaces
+      if (e.key === 'Tab' && !e.shiftKey) {
+        e.preventDefault();
+        editor.value = val.substring(0, start) + '    ' + val.substring(end);
+        editor.selectionStart = editor.selectionEnd = start + 4;
+        updateLineNumbers();
+        updateSyntaxHighlight();
+        return;
+      }
+      return; // No other shortcuts on mobile
+    }
+
+    // Enter = Run code (without Shift) - PC only
     if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.altKey) {
       e.preventDefault();
       runCode();
@@ -707,6 +1033,8 @@ function setupEditor() {
       e.preventDefault();
       editor.value = val.substring(0, start) + '\n' + val.substring(end);
       editor.selectionStart = editor.selectionEnd = start + 1;
+      updateLineNumbers();
+      updateSyntaxHighlight();
       return;
     }
 
@@ -715,6 +1043,8 @@ function setupEditor() {
       e.preventDefault();
       editor.value = val.substring(0, start) + '    ' + val.substring(end);
       editor.selectionStart = editor.selectionEnd = start + 4;
+      updateLineNumbers();
+      updateSyntaxHighlight();
       return;
     }
 
@@ -727,6 +1057,8 @@ function setupEditor() {
         editor.value = val.substring(0, lineStart) + line.substring(4) + val.substring(end);
         editor.selectionStart = editor.selectionEnd = Math.max(start - 4, lineStart);
       }
+      updateLineNumbers();
+      updateSyntaxHighlight();
       return;
     }
 
@@ -753,6 +1085,8 @@ function setupEditor() {
         editor.value = val.substring(0, lineStart) + newLine + val.substring(actualEnd);
         editor.selectionStart = editor.selectionEnd = start + 2;
       }
+      updateLineNumbers();
+      updateSyntaxHighlight();
       return;
     }
 
@@ -768,6 +1102,8 @@ function setupEditor() {
         editor.value = newVal;
         editor.selectionStart = editor.selectionEnd = start - lines[currentLine].length - 1;
       }
+      updateLineNumbers();
+      updateSyntaxHighlight();
       return;
     }
 
@@ -782,6 +1118,8 @@ function setupEditor() {
         editor.value = newVal;
         editor.selectionStart = editor.selectionEnd = start + lines[currentLine].length + 1;
       }
+      updateLineNumbers();
+      updateSyntaxHighlight();
       return;
     }
 
@@ -794,6 +1132,8 @@ function setupEditor() {
       else lineEnd += 1; // include newline
       editor.value = val.substring(0, lineStart) + val.substring(lineEnd);
       editor.selectionStart = editor.selectionEnd = lineStart;
+      updateLineNumbers();
+      updateSyntaxHighlight();
       return;
     }
 
@@ -815,24 +1155,19 @@ function setupEditor() {
         editor.value = val.substring(0, lineEnd) + '\n' + line + val.substring(lineEnd);
         editor.selectionStart = editor.selectionEnd = start + line.length + 1;
       }
+      updateLineNumbers();
+      updateSyntaxHighlight();
       return;
     }
   });
 }
 
 // ===== INIT =====
-async function init() {
+function init() {
   updateUI();
   render();
   setupEditor();
-
-  try {
-    py = await loadPyodide();
-    document.getElementById('lo').classList.add('hid');
-  } catch (e) {
-    document.querySelector('.lo-text').textContent = 'Python環境の読み込みに失敗しました。ページを再読込してください。';
-    console.error('Pyodide error:', e);
-  }
+  // No Pyodide loading at startup - lazy loaded when entering lesson page
 }
 
 init();

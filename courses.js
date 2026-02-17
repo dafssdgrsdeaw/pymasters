@@ -1,7 +1,7 @@
 // PyMasters v3 - Course Data
 const COURSES = [
 // ========== 1. Pythonをはじめよう ==========
-{id:"py-start",title:"Pythonをはじめよう",desc:"プログラミングの世界へ最初の一歩。何も知らなくて大丈夫！",level:"b",icon:"🌱",free:true,lessons:[
+{id:"py-start",title:"Pythonをはじめよう",desc:"プログラミングの世界へ最初の一歩。何も知らなくて大丈夫！",level:"b",icon:"🌱",free:true,nextCourse:"py-basics",lessons:[
 {id:"s1",title:"プログラミングって何？",xp:30,
 content:[
 {type:"text",body:"## プログラミングって何だろう？\n\nプログラミングとは、**コンピュータへの指示書を書くこと**です。\n\n身近な例で考えてみましょう。料理のレシピを思い浮かべてください。\n\n「①卵を割る → ②フライパンで焼く → ③お皿に盛る」\n\nこのように、**やることを順番に書き出す**のがプログラミングです。コンピュータは人間と違って、曖昧な指示では動けません。「いい感じに焼いて」ではダメで、「中火で3分焼く」のように**具体的に**伝える必要があります。"},
@@ -27,7 +27,7 @@ content:[
 ]},
 
 // ========== 2. Python基礎マスター ==========
-{id:"py-basics",title:"Python基礎マスター",desc:"変数・データ型・文字列・計算。Pythonの土台をしっかり固めよう",level:"b",icon:"🐣",free:true,lessons:[
+{id:"py-basics",title:"Python基礎マスター",desc:"変数・データ型・文字列・計算。Pythonの土台をしっかり固めよう",level:"b",icon:"🐣",free:true,nextCourse:"py-control",lessons:[
 {id:"b1",title:"変数 - データに名前をつける箱",xp:50,
 content:[
 {type:"text",body:"## <span class=\"term\" data-term=\"variable\">変数</span>とは？\n\n<span class=\"term\" data-term=\"variable\">変数</span>は、データを入れておく**名前つきの箱**です。\n\n想像してみてください。引っ越しのとき、段ボール箱に「食器」「本」「服」とラベルを貼りますよね。プログラミングの<span class=\"term\" data-term=\"variable\">変数</span>もまったく同じです。\n\nデータに名前をつけて保存し、あとから名前で取り出せます。\n\n### 書き方\n\n<span class=\"copyable\">name = \"太郎\"</span>\n\nこれは「nameという箱に、太郎という文字列を入れる」という意味です。`=` は「等しい」ではなく**「代入する（入れる）」**という意味です。"},
@@ -66,7 +66,7 @@ content:[
 ]},
 
 // ========== 3. 条件分岐とループ ==========
-{id:"py-control",title:"条件分岐とループ",desc:"if文・for文・while文で、プログラムに判断と繰り返しをさせよう",level:"b",icon:"🔀",free:true,lessons:[
+{id:"py-control",title:"条件分岐とループ",desc:"if文・for文・while文で、プログラムに判断と繰り返しをさせよう",level:"b",icon:"🔀",free:true,nextCourse:"py-func",lessons:[
 {id:"c1",title:"もし〜なら - if文の基本",xp:60,
 content:[
 {type:"text",body:"## <span class=\"term\" data-term=\"if\">if文</span>（条件分岐）\n\n日常生活でも「もし雨なら傘を持つ」と判断しますよね。プログラムにも同じ判断をさせられます。\n\n```python\nif 条件:\n    実行する処理\n```\n\n**超重要**: 条件の後ろにコロン `:` をつけて、次の行は**スペース4つ分右にずらす**（<span class=\"term\" data-term=\"indent\">インデント</span>）。この<span class=\"term\" data-term=\"indent\">インデント</span>がPythonの特徴で、「この処理はifの中ですよ」という意味になります。"},
@@ -105,7 +105,7 @@ content:[
 ]},
 
 // ========== 4. 関数をマスター ==========
-{id:"py-func",title:"関数をマスター",desc:"コードを整理して再利用。def・引数・戻り値を学ぼう",level:"b",icon:"⚡",free:true,lessons:[
+{id:"py-func",title:"関数をマスター",desc:"コードを整理して再利用。def・引数・戻り値を学ぼう",level:"b",icon:"⚡",free:true,nextCourse:"py-ds",lessons:[
 {id:"f1",title:"関数って何？ - 料理レシピのように",xp:70,
 content:[
 {type:"text",body:"## <span class=\"term\" data-term=\"function\">関数</span>とは？\n\n<span class=\"term\" data-term=\"function\">関数</span>は「処理のレシピ」です。\n\n料理で例えると：「カレーの作り方」をレシピに書いておけば、何度でもそのレシピ通りに作れますよね。プログラミングの<span class=\"term\" data-term=\"function\">関数</span>も同じで、処理をまとめて名前をつけ、何度でも呼び出せます。\n\n```python\ndef 関数名(引数):\n    処理\n    return 戻り値\n```\n\n<span class=\"term\" data-term=\"def\">def</span> は「define（定義する）」の略です。"},
@@ -136,7 +136,7 @@ content:[
 ]},
 
 // ========== 5. データ構造 ==========
-{id:"py-ds",title:"データ構造",desc:"リスト・辞書・タプル・リスト内包表記でデータを効率管理",level:"i",icon:"📦",free:true,lessons:[
+{id:"py-ds",title:"データ構造",desc:"リスト・辞書・タプル・リスト内包表記でデータを効率管理",level:"i",icon:"📦",free:true,nextCourse:"py-clean",lessons:[
 {id:"d1",title:"リスト - データの列",xp:80,
 content:[
 {type:"text",body:"## <span class=\"term\" data-term=\"list\">リスト</span>\n\n<span class=\"term\" data-term=\"list\">リスト</span>は、複数のデータを**順番に並べて**保存するデータ構造です。\n\n買い物リストを想像してください。「牛乳、卵、パン」と順番に並んでいますよね。\n\n<span class=\"copyable\">fruits = [\"りんご\", \"バナナ\", \"みかん\"]</span>\n\n<span class=\"term\" data-term=\"index\">インデックス</span>（番号）は **0から** 始まります。\n\n- `fruits[0]` → \"りんご\"\n- `fruits[1]` → \"バナナ\"\n- `fruits[-1]` → \"みかん\"（最後の要素）"},
@@ -166,7 +166,7 @@ content:[
 ]},
 
 // ========== 6. きれいなコードの書き方 ==========
-{id:"py-clean",title:"きれいなコードの書き方",desc:"コメント・命名規則・コードの整理。読みやすいコードを書こう",level:"i",icon:"✨",free:true,lessons:[
+{id:"py-clean",title:"きれいなコードの書き方",desc:"コメント・命名規則・コードの整理。読みやすいコードを書こう",level:"i",icon:"✨",free:true,nextCourse:"py-error",lessons:[
 {id:"cl1",title:"コメント - 未来の自分へのメモ",xp:50,
 content:[
 {type:"text",body:"## <span class=\"term\" data-term=\"comment\">コメント</span>\n\nコードの中にメモを残せます。`#` の後に書いた文字はプログラムに無視されます。\n\n<span class=\"copyable\"># これはコメントです</span>\n\nコメントは「未来の自分」や「チームメンバー」への手紙です。3ヶ月後の自分は、今書いたコードを覚えていないかもしれません。\n\n### いつコメントを書く？\n- **なぜ**そのコードを書いたか（Whyを書く）\n- 複雑な処理の説明\n- TODOメモ（`# TODO: あとで修正する`）\n\n### 書かなくていいコメント\n- コードを見れば明らかなこと（`x = 5  # xに5を代入` ← 不要！）"},
@@ -190,7 +190,7 @@ content:[
 ]},
 
 // ========== 7. オブジェクト指向入門 ==========
-{id:"py-oop",title:"オブジェクト指向入門",desc:"クラスと継承。現実世界をコードで表現しよう",level:"i",icon:"🏗️",free:true,lessons:[
+{id:"py-oop",title:"オブジェクト指向入門",desc:"クラスと継承。現実世界をコードで表現しよう",level:"i",icon:"🏗️",free:true,nextCourse:"py-janken",lessons:[
 {id:"o1",title:"クラスとは？ - 設計図を作ろう",xp:100,
 content:[
 {type:"text",body:"## <span class=\"term\" data-term=\"class\">クラス</span>\n\n<span class=\"term\" data-term=\"class\">クラス</span>は「設計図」、<span class=\"term\" data-term=\"instance\">インスタンス</span>は「設計図から作った実物」です。\n\nクッキー型（クラス）から、たくさんのクッキー（インスタンス）を作るイメージです。\n\n<span class=\"term\" data-term=\"init\">__init__</span>は<span class=\"term\" data-term=\"instance\">インスタンス</span>を作るときに自動で呼ばれる特別な<span class=\"term\" data-term=\"method-oop\">メソッド</span>です。\n\n<span class=\"term\" data-term=\"self\">self</span>は「自分自身」を指す特別な<span class=\"term\" data-term=\"argument\">引数</span>です。"},
@@ -211,7 +211,7 @@ content:[
 ]},
 
 // ========== 8. エラーと友達になろう ==========
-{id:"py-error",title:"エラーと友達になろう",desc:"エラーメッセージの読み方・try/except・デバッグのコツ",level:"i",icon:"🛡️",free:true,lessons:[
+{id:"py-error",title:"エラーと友達になろう",desc:"エラーメッセージの読み方・try/except・デバッグのコツ",level:"i",icon:"🛡️",free:true,nextCourse:"py-oop",lessons:[
 {id:"e1",title:"エラーメッセージを読もう",xp:80,
 content:[
 {type:"text",body:"## <span class=\"term\" data-term=\"error\">エラー</span>は怖くない！\n\nプログラミングで<span class=\"term\" data-term=\"error\">エラー</span>が出るのは当たり前。プロでも毎日エラーを出します。\n\n大事なのは**エラーメッセージを読んで原因を見つける**こと。\n\n### よくある<span class=\"term\" data-term=\"error\">エラー</span>\n\n| エラー名 | 原因 | 例 |\n|---|---|---|\n| SyntaxError | 書き方の間違い | カッコ忘れ、コロン忘れ |\n| NameError | 未定義の名前 | 変数のスペルミス |\n| TypeError | 型の不一致 | 文字列+数字 |\n| IndexError | 範囲外 | リストの範囲外アクセス |\n| ZeroDivisionError | 0で割った | `10 / 0` |"},
@@ -325,5 +325,98 @@ content:[
 {type:"text",body:"## レポート自動生成\n\nデータを集計し、見やすいレポートを自動生成する実践例です。\n\n複数の<span class=\"term\" data-term=\"function\">関数</span>を組み合わせて、実用的なプログラムを作ります。"},
 {type:"code",code:"def generate_report(title, data):\n    print(f\"=== {title} ===\")\n    print(f\"データ数: {len(data)}\")\n    print(f\"合計: {sum(data)}\")\n    print(f\"平均: {sum(data)/len(data):.1f}\")\n    print(f\"最大: {max(data)}\")\n    print(f\"最小: {min(data)}\")\n    print(\"=\" * 20)\n\ngenerate_report(\"月間売上\", [12000, 34000, 28000, 51000])",desc:"関数でレポート生成を自動化"}
 ],exercise:{instruction:"generate_report(title, numbers) 関数を作り、「=== title ===」「合計: ○」「平均: ○」を表示してください。generate_report(\"テスト結果\", [80,90,70]) を呼び出し。",initialCode:"# レポート関数\n",expectedOutput:"=== テスト結果 ===\n合計: 240\n平均: 80.0",keywords:["def","print","sum"],answer:"def generate_report(title, numbers):\n    print(f\"=== {title} ===\")\n    print(f\"合計: {sum(numbers)}\")\n    print(f\"平均: {sum(numbers)/len(numbers)}\")\ngenerate_report(\"テスト結果\", [80, 90, 70])",hints:["def generate_report(title, numbers):","sum() と len() で計算","f文字列で整形"]}}
+]},
+
+// ========== NEW: じゃんけんゲームを作ろう ==========
+{id:"py-janken",title:"じゃんけんゲームを作ろう",desc:"randomモジュールとif文を組み合わせて、じゃんけんゲームを完成させよう！",level:"b",icon:"🎮",free:true,nextCourse:"py-calc",lessons:[
+{id:"jk1",title:"randomモジュールの使い方",xp:60,
+content:[
+{type:"text",body:"## ランダムに選ぶ - randomモジュール\n\nじゃんけんゲームを作るには、コンピュータに「ランダムに手を選ばせる」必要がありますね。\n\nPythonには**random**モジュールという便利な道具箱があります。使うには最初に`import random`と書きます。\n\n### random.choice() の使い方\n\n<span class=\"term\" data-term=\"import\">import</span>は「道具箱を開く」という意味です。\n\n`random.choice(リスト)` を使うと、リストの中からランダムに1つ選んでくれます。"},
+{type:"code",code:"import random\n\nhands = [\"グー\", \"チョキ\", \"パー\"]\ncpu_hand = random.choice(hands)\nprint(f\"CPUの手: {cpu_hand}\")",desc:"random.choice()でリストからランダムに選択"},
+{type:"tip",body:"💡 `random.choice()` は毎回ランダムな結果を返します。実行するたびに変わるので、何度か試してみましょう！"}
+],exercise:{instruction:"import random を使い、hands = [\"グー\", \"チョキ\", \"パー\"] からランダムに1つ選んで「CPUの手: ○○」と表示してください。\n※採点のため random.seed(0) を最初に書いてください。",initialCode:"import random\nrandom.seed(0)\n# ここにコードを書いてね\n",expectedOutput:"CPUの手: パー",keywords:["random.choice","print"],answer:"import random\nrandom.seed(0)\nhands = [\"グー\", \"チョキ\", \"パー\"]\ncpu_hand = random.choice(hands)\nprint(f\"CPUの手: {cpu_hand}\")",hints:["hands = [\"グー\", \"チョキ\", \"パー\"] でリスト作成","random.choice(hands) でランダム選択","f文字列で結果を表示"]}},
+
+{id:"jk2",title:"勝敗判定ロジック",xp:70,
+content:[
+{type:"text",body:"## じゃんけんの勝敗を判定しよう\n\nプレイヤーの手とCPUの手を比較して、勝ち・負け・あいこを判定します。\n\nif/elif/elseを使って条件分岐を組み立てましょう。\n\n### 勝敗のルール\n\n- グー → チョキに勝つ\n- チョキ → パーに勝つ\n- パー → グーに勝つ\n- 同じ手 → あいこ"},
+{type:"code",code:"player = \"グー\"\ncpu = \"チョキ\"\n\nif player == cpu:\n    print(\"あいこ！\")\nelif (player == \"グー\" and cpu == \"チョキ\") or \\\n     (player == \"チョキ\" and cpu == \"パー\") or \\\n     (player == \"パー\" and cpu == \"グー\"):\n    print(\"あなたの勝ち！\")\nelse:\n    print(\"あなたの負け…\")",desc:"if/elif/elseで勝敗判定"},
+{type:"tip",body:"💡 `\\`（バックスラッシュ）を行末に書くと、次の行に続けて書けます。長い条件式を見やすくするテクニックです。"}
+],exercise:{instruction:"player = \"パー\"、cpu = \"グー\" として、勝敗を判定して結果を表示してください。「あなたの勝ち！」と表示されれば正解です。",initialCode:"player = \"パー\"\ncpu = \"グー\"\n# 勝敗判定を書いてね\n",expectedOutput:"あなたの勝ち！",keywords:["if","print"],answer:"player = \"パー\"\ncpu = \"グー\"\nif player == cpu:\n    print(\"あいこ！\")\nelif (player == \"グー\" and cpu == \"チョキ\") or (player == \"チョキ\" and cpu == \"パー\") or (player == \"パー\" and cpu == \"グー\"):\n    print(\"あなたの勝ち！\")\nelse:\n    print(\"あなたの負け…\")",hints:["まず player == cpu であいこチェック","勝つパターンを or でつなぐ","else で負けを処理"]}},
+
+{id:"jk3",title:"勝敗判定を関数にまとめる",xp:80,
+content:[
+{type:"text",body:"## 関数にまとめよう\n\n勝敗判定のコードを<span class=\"term\" data-term=\"function\">関数</span>にまとめると、何度でも呼び出せて便利です。\n\n`judge(player, cpu)` という関数を作り、結果の文字列を返すようにしましょう。\n\n### 関数化のメリット\n\n- コードが整理される\n- 何度でも使い回せる\n- テストしやすい"},
+{type:"code",code:"def judge(player, cpu):\n    if player == cpu:\n        return \"あいこ\"\n    elif (player == \"グー\" and cpu == \"チョキ\") or \\\n         (player == \"チョキ\" and cpu == \"パー\") or \\\n         (player == \"パー\" and cpu == \"グー\"):\n        return \"勝ち\"\n    else:\n        return \"負け\"\n\nresult = judge(\"グー\", \"チョキ\")\nprint(result)",desc:"関数にすると使い回しが簡単"},
+{type:"tip",body:"💡 `return` で値を返す関数は、結果を変数に入れて後から使えます。printと違って「結果を持ち出せる」のがポイントです。"}
+],exercise:{instruction:"judge(player, cpu) 関数を作り、judge(\"チョキ\", \"パー\") の結果を表示してください。勝ちなら「勝ち」と表示。",initialCode:"# judge関数を定義しよう\n",expectedOutput:"勝ち",keywords:["def","judge","return","print"],answer:"def judge(player, cpu):\n    if player == cpu:\n        return \"あいこ\"\n    elif (player == \"グー\" and cpu == \"チョキ\") or (player == \"チョキ\" and cpu == \"パー\") or (player == \"パー\" and cpu == \"グー\"):\n        return \"勝ち\"\n    else:\n        return \"負け\"\nprint(judge(\"チョキ\", \"パー\"))",hints:["def judge(player, cpu): で関数定義","return で結果を返す","print(judge(\"チョキ\", \"パー\"))"]}},
+
+{id:"jk4",title:"3回勝負を実装しよう",xp:90,
+content:[
+{type:"text",body:"## 3回勝負にしよう！\n\nfor文を使って3回じゃんけんをし、勝敗をカウントしましょう。\n\nこれまで学んだ全てを組み合わせます:\n- randomモジュール\n- if/elif/else\n- for文\n- 関数\n- 変数（カウンター）"},
+{type:"code",code:"import random\n\ndef judge(p, c):\n    if p == c: return \"あいこ\"\n    elif (p==\"グー\" and c==\"チョキ\") or (p==\"チョキ\" and c==\"パー\") or (p==\"パー\" and c==\"グー\"): return \"勝ち\"\n    else: return \"負け\"\n\nhands = [\"グー\", \"チョキ\", \"パー\"]\nwins = 0\nfor i in range(3):\n    cpu = random.choice(hands)\n    player = random.choice(hands)  # 本来はinput()で入力\n    result = judge(player, cpu)\n    print(f\"{i+1}回目: {player} vs {cpu} → {result}\")\n    if result == \"勝ち\": wins += 1\nprint(f\"勝利数: {wins}/3\")",desc:"3回勝負の完成形"},
+{type:"tip",body:"💡 実際のゲームでは `input()` でユーザー入力を受け取りますが、このエディタではinput()が使えないため、random.choice()で代用しています。"}
+],exercise:{instruction:"3回じゃんけんをし、固定の手（[\"グー\",\"パー\",\"チョキ\"]）でCPUの手（random.seed(1)使用）と勝負して、勝利数を表示してください。",initialCode:"import random\nrandom.seed(1)\n\ndef judge(p, c):\n    if p == c: return \"あいこ\"\n    elif (p==\"グー\" and c==\"チョキ\") or (p==\"チョキ\" and c==\"パー\") or (p==\"パー\" and c==\"グー\"): return \"勝ち\"\n    else: return \"負け\"\n\nhands = [\"グー\", \"チョキ\", \"パー\"]\nmy_hands = [\"グー\", \"パー\", \"チョキ\"]\nwins = 0\n# 3回ループで勝負して勝利数を表示\n",expectedOutput:"1回目: グー vs チョキ → 勝ち\n2回目: パー vs パー → あいこ\n3回目: チョキ vs グー → 負け\n勝利数: 1/3",keywords:["for","judge","print"],answer:"import random\nrandom.seed(1)\n\ndef judge(p, c):\n    if p == c: return \"あいこ\"\n    elif (p==\"グー\" and c==\"チョキ\") or (p==\"チョキ\" and c==\"パー\") or (p==\"パー\" and c==\"グー\"): return \"勝ち\"\n    else: return \"負け\"\n\nhands = [\"グー\", \"チョキ\", \"パー\"]\nmy_hands = [\"グー\", \"パー\", \"チョキ\"]\nwins = 0\nfor i in range(3):\n    cpu = random.choice(hands)\n    player = my_hands[i]\n    result = judge(player, cpu)\n    print(f\"{i+1}回目: {player} vs {cpu} → {result}\")\n    if result == \"勝ち\": wins += 1\nprint(f\"勝利数: {wins}/3\")",hints:["for i in range(3): で3回ループ","my_hands[i] でプレイヤーの手を取得","wins += 1 で勝利数カウント"]}}
+]},
+
+// ========== NEW: Pythonで電卓を作ろう ==========
+{id:"py-calc",title:"Pythonで電卓を作ろう",desc:"四則演算の関数作成からエラーハンドリングまで、実用的な電卓を完成させよう",level:"b",icon:"🔢",free:true,nextCourse:"py-data-auto",lessons:[
+{id:"ca1",title:"四則演算の関数を作る",xp:60,
+content:[
+{type:"text",body:"## 電卓の基本 - 四則演算関数\n\n電卓の基本は足し算・引き算・掛け算・割り算です。\n\nそれぞれを<span class=\"term\" data-term=\"function\">関数</span>にしましょう。\n\n### なぜ関数にする？\n\n`10 + 5` と直接書いてもいいですが、関数にすると:\n- 後から機能を追加しやすい（エラーチェック等）\n- コードが整理される\n- テストしやすい"},
+{type:"code",code:"def add(a, b):\n    return a + b\n\ndef sub(a, b):\n    return a - b\n\ndef mul(a, b):\n    return a * b\n\ndef div(a, b):\n    return a / b\n\nprint(add(10, 5))\nprint(sub(10, 5))\nprint(mul(10, 5))\nprint(div(10, 5))",desc:"4つの計算関数"},
+{type:"tip",body:"💡 関数名は短くてわかりやすいものにしましょう。add, sub, mul, div は「足す、引く、掛ける、割る」の英語略です。"}
+],exercise:{instruction:"add(a,b)、sub(a,b)、mul(a,b)、div(a,b) の4つの関数を定義し、それぞれ (10, 3) で呼び出して結果を表示してください。",initialCode:"# 4つの計算関数を作ろう\n",expectedOutput:"13\n7\n30\n3.3333333333333335",keywords:["def","return","print"],answer:"def add(a, b):\n    return a + b\ndef sub(a, b):\n    return a - b\ndef mul(a, b):\n    return a * b\ndef div(a, b):\n    return a / b\nprint(add(10, 3))\nprint(sub(10, 3))\nprint(mul(10, 3))\nprint(div(10, 3))",hints:["def add(a, b): return a + b","4つの関数を定義","print(add(10, 3)) で呼び出し"]}},
+
+{id:"ca2",title:"計算を選択して実行する",xp:70,
+content:[
+{type:"text",body:"## 演算の選択と実行\n\n電卓アプリでは、ユーザーが「どの計算をしたいか」を選択します。\n\n`calculate(op, a, b)` という関数を作り、演算子（`+`, `-`, `*`, `/`）に応じて正しい計算を実行しましょう。\n\n### if/elifを使った分岐\n\n演算子の文字列を判定して、対応する計算を行います。"},
+{type:"code",code:"def calculate(op, a, b):\n    if op == \"+\":\n        return a + b\n    elif op == \"-\":\n        return a - b\n    elif op == \"*\":\n        return a * b\n    elif op == \"/\":\n        return a / b\n    else:\n        return \"不明な演算子です\"\n\nprint(calculate(\"+\", 15, 3))\nprint(calculate(\"*\", 15, 3))",desc:"演算子で分岐する計算関数"},
+{type:"tip",body:"💡 `else` で「想定外の入力」に対応するのは、丈夫なプログラムを作るコツです。"}
+],exercise:{instruction:"calculate(op, a, b) 関数を作り、以下の4つの計算結果を表示してください:\n(+, 20, 8), (-, 20, 8), (*, 20, 8), (/, 20, 8)",initialCode:"# calculate関数を作ろう\n",expectedOutput:"28\n12\n160\n2.5",keywords:["def","calculate","return","print"],answer:"def calculate(op, a, b):\n    if op == \"+\":\n        return a + b\n    elif op == \"-\":\n        return a - b\n    elif op == \"*\":\n        return a * b\n    elif op == \"/\":\n        return a / b\nprint(calculate(\"+\", 20, 8))\nprint(calculate(\"-\", 20, 8))\nprint(calculate(\"*\", 20, 8))\nprint(calculate(\"/\", 20, 8))",hints:["if op == \"+\": で演算子チェック","elif で各演算子を分岐","4回 print(calculate(...)) で呼び出し"]}},
+
+{id:"ca3",title:"エラーハンドリング",xp:80,
+content:[
+{type:"text",body:"## エラーに備えよう\n\n電卓で一番多いエラーは**ゼロ除算**です。\n\n`10 / 0` はPythonでエラーになります。try/exceptで安全に処理しましょう。\n\n### try/except の使い方\n\n```python\ntry:\n    # エラーが起きるかもしれない処理\nexcept エラーの種類:\n    # エラー時の処理\n```"},
+{type:"code",code:"def safe_div(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return \"エラー: 0で割ることはできません\"\n\nprint(safe_div(10, 3))\nprint(safe_div(10, 0))",desc:"try/exceptでゼロ除算を安全に処理"},
+{type:"tip",body:"💡 `try/except` はプロのプログラマーが必ず使うテクニックです。「落ちないプログラム」を作る第一歩！"}
+],exercise:{instruction:"safe_calculate(op, a, b) 関数を作ってください。ゼロ除算時は「エラー: 0で割れません」と返す。以下のテストで確認:\nsafe_calculate(\"/\", 10, 0) と safe_calculate(\"/\", 10, 2)",initialCode:"# 安全な計算関数\n",expectedOutput:"エラー: 0で割れません\n5.0",keywords:["def","try","except","return"],answer:"def safe_calculate(op, a, b):\n    try:\n        if op == \"+\": return a + b\n        elif op == \"-\": return a - b\n        elif op == \"*\": return a * b\n        elif op == \"/\": return a / b\n    except ZeroDivisionError:\n        return \"エラー: 0で割れません\"\nprint(safe_calculate(\"/\", 10, 0))\nprint(safe_calculate(\"/\", 10, 2))",hints:["try: の中に計算処理を書く","except ZeroDivisionError: でキャッチ","エラー時は文字列を return"]}},
+
+{id:"ca4",title:"計算履歴をリストで管理",xp:90,
+content:[
+{type:"text",body:"## 計算履歴を保存しよう\n\n電卓に計算履歴機能をつけましょう！\n\nリストを使って、計算のたびに結果を追加していきます。\n\n### リストの append()\n\n`history = []` で空のリストを作り、`history.append(値)` で追加します。"},
+{type:"code",code:"history = []\n\ndef calc_with_history(op, a, b):\n    if op == \"+\": result = a + b\n    elif op == \"-\": result = a - b\n    elif op == \"*\": result = a * b\n    elif op == \"/\": result = a / b\n    record = f\"{a} {op} {b} = {result}\"\n    history.append(record)\n    return result\n\ncalc_with_history(\"+\", 10, 5)\ncalc_with_history(\"*\", 3, 7)\ncalc_with_history(\"-\", 100, 42)\n\nprint(\"=== 計算履歴 ===\")\nfor h in history:\n    print(h)",desc:"リストで計算履歴を管理"},
+{type:"tip",body:"💡 `append()` はリストの末尾に要素を追加するメソッドです。計算のたびに履歴が増えていきます！"}
+],exercise:{instruction:"calc_with_history(op, a, b) を作り、3つの計算 (+,5,3), (*,4,6), (-,10,2) を実行後、「=== 計算履歴 ===」の後に履歴を表示してください。",initialCode:"history = []\n# calc_with_history関数を作ろう\n",expectedOutput:"=== 計算履歴 ===\n5 + 3 = 8\n4 * 6 = 24\n10 - 2 = 8",keywords:["def","append","history","print"],answer:"history = []\ndef calc_with_history(op, a, b):\n    if op == \"+\": result = a + b\n    elif op == \"-\": result = a - b\n    elif op == \"*\": result = a * b\n    elif op == \"/\": result = a / b\n    history.append(f\"{a} {op} {b} = {result}\")\n    return result\ncalc_with_history(\"+\", 5, 3)\ncalc_with_history(\"*\", 4, 6)\ncalc_with_history(\"-\", 10, 2)\nprint(\"=== 計算履歴 ===\")\nfor h in history:\n    print(h)",hints:["history.append(f\"{a} {op} {b} = {result}\")","3回 calc_with_history() を呼ぶ","for h in history: print(h)"]}}
+]},
+
+// ========== NEW: データ自動集計 ==========
+{id:"py-data-auto",title:"データ自動集計",desc:"CSVデータの解析・集計・カテゴリ別分析。実務で使えるデータ処理を学ぼう",level:"i",icon:"📊",free:true,lessons:[
+{id:"da1",title:"CSVデータをリストに変換",xp:80,
+content:[
+{type:"text",body:"## データの読み込み\n\n実務では、CSVファイル（カンマ区切りテキスト）からデータを読むことが多いです。\n\nここでは文字列としてCSVデータを扱い、リストに変換する方法を学びます。\n\n### split() で分割\n\n`\"a,b,c\".split(\",\")` → `[\"a\", \"b\", \"c\"]`\n\n行ごとに分割し、さらにカンマで分割すれば、2次元リスト（表）になります。"},
+{type:"code",code:"csv_data = \"名前,数学,英語,理科\\n太郎,85,72,90\\n花子,92,88,78\\n次郎,68,95,82\"\n\nrows = csv_data.split(\"\\n\")\nheader = rows[0].split(\",\")\nprint(f\"列名: {header}\")\n\nfor row in rows[1:]:\n    cols = row.split(\",\")\n    print(f\"{cols[0]}: 数学{cols[1]}点\")",desc:"文字列のCSVデータをsplit()で解析"},
+{type:"tip",body:"💡 `rows[1:]` は「2番目以降の全要素」を取得するスライスです。ヘッダ行をスキップするのによく使います！"}
+],exercise:{instruction:"csv_data = \"品名,個数,単価\\nりんご,5,120\\nバナナ,8,80\\nみかん,12,60\" を解析し、各行を「○○: △個」の形式で表示してください。",initialCode:"csv_data = \"品名,個数,単価\\nりんご,5,120\\nバナナ,8,80\\nみかん,12,60\"\n# CSVデータを解析しよう\n",expectedOutput:"りんご: 5個\nバナナ: 8個\nみかん: 12個",keywords:["split","for","print"],answer:"csv_data = \"品名,個数,単価\\nりんご,5,120\\nバナナ,8,80\\nみかん,12,60\"\nrows = csv_data.split(\"\\n\")\nfor row in rows[1:]:\n    cols = row.split(\",\")\n    print(f\"{cols[0]}: {cols[1]}個\")",hints:["csv_data.split(\"\\n\") で行分割","rows[1:] でヘッダをスキップ","cols = row.split(\",\") で列分割"]}},
+
+{id:"da2",title:"合計・平均・最大・最小",xp:90,
+content:[
+{type:"text",body:"## データの集計関数\n\n数値データを集計する関数を作りましょう。\n\nPythonの組み込み関数が便利です:\n- `sum(list)` - 合計\n- `len(list)` - 要素数\n- `max(list)` - 最大値\n- `min(list)` - 最小値\n\n平均は `sum(list) / len(list)` で計算します。"},
+{type:"code",code:"def summarize(name, data):\n    print(f\"--- {name} ---\")\n    print(f\"合計: {sum(data)}\")\n    print(f\"平均: {sum(data)/len(data):.1f}\")\n    print(f\"最大: {max(data)}\")\n    print(f\"最小: {min(data)}\")\n\nscores = [85, 92, 68, 78, 95]\nsummarize(\"テスト結果\", scores)",desc:"組み込み関数で統計値を計算"},
+{type:"tip",body:"💡 `:.1f` は小数点以下1桁に丸めるフォーマットです。`.2f` なら2桁になります。"}
+],exercise:{instruction:"summarize(name, data) 関数を作り、sales = [12000, 34000, 28000, 51000, 19000] に対して「--- 月間売上 ---」「合計: ○」「平均: ○」「最大: ○」「最小: ○」を表示。",initialCode:"# 集計関数を作ろう\nsales = [12000, 34000, 28000, 51000, 19000]\n",expectedOutput:"--- 月間売上 ---\n合計: 144000\n平均: 28800.0\n最大: 51000\n最小: 12000",keywords:["def","sum","max","min","print"],answer:"def summarize(name, data):\n    print(f\"--- {name} ---\")\n    print(f\"合計: {sum(data)}\")\n    print(f\"平均: {sum(data)/len(data)}\")\n    print(f\"最大: {max(data)}\")\n    print(f\"最小: {min(data)}\")\nsales = [12000, 34000, 28000, 51000, 19000]\nsummarize(\"月間売上\", sales)",hints:["def summarize(name, data):","sum(), len(), max(), min() を使う","f文字列でフォーマット"]}},
+
+{id:"da3",title:"カテゴリ別に集計する",xp:100,
+content:[
+{type:"text",body:"## 辞書を使ったカテゴリ別集計\n\nデータをカテゴリ（グループ）ごとに分けて集計するには、<span class=\"term\" data-term=\"dict\">辞書</span>が便利です。\n\n### パターン: カテゴリ別にリストを作る\n\n```python\ncategories = {}\nfor item in data:\n    cat = item[\"category\"]\n    if cat not in categories:\n        categories[cat] = []\n    categories[cat].append(item[\"value\"])\n```\n\nこれで各カテゴリに値のリストが集まります。"},
+{type:"code",code:"data = [\n    (\"食品\", 500), (\"日用品\", 300),\n    (\"食品\", 800), (\"衣類\", 2000),\n    (\"日用品\", 150), (\"食品\", 1200)\n]\n\ncategories = {}\nfor cat, val in data:\n    if cat not in categories:\n        categories[cat] = []\n    categories[cat].append(val)\n\nfor cat, vals in categories.items():\n    print(f\"{cat}: 合計{sum(vals)}円 ({len(vals)}件)\")",desc:"タプルリストを辞書でカテゴリ集計"},
+{type:"tip",body:"💡 `for cat, val in data:` はタプルのアンパック（分解代入）です。(\"食品\", 500) が cat=\"食品\", val=500 に分かれます。"}
+],exercise:{instruction:"sales = [(\"A店\",100),(\"B店\",200),(\"A店\",150),(\"B店\",300),(\"A店\",250)] を店舗別に集計し、各店舗の合計を表示してください。",initialCode:"sales = [(\"A店\",100),(\"B店\",200),(\"A店\",150),(\"B店\",300),(\"A店\",250)]\n# 店舗別に集計しよう\n",expectedOutput:"A店: 合計500円\nB店: 合計500円",keywords:["for","if","print","sum"],answer:"sales = [(\"A店\",100),(\"B店\",200),(\"A店\",150),(\"B店\",300),(\"A店\",250)]\nshops = {}\nfor shop, val in sales:\n    if shop not in shops:\n        shops[shop] = []\n    shops[shop].append(val)\nfor shop, vals in shops.items():\n    print(f\"{shop}: 合計{sum(vals)}円\")",hints:["辞書 shops = {} で店舗ごとにリスト管理","if shop not in shops: で初期化","shops.items() でループして合計表示"]}},
+
+{id:"da4",title:"結果をフォーマットして表示",xp:100,
+content:[
+{type:"text",body:"## f文字列で表組み風出力\n\n集計結果を見やすく整形して表示しましょう。\n\nf文字列の**幅指定**を使うと、テキストを揃えて表示できます。\n\n### 幅指定の書き方\n\n- `{name:<10}` : 左寄せ、幅10文字\n- `{value:>8}` : 右寄せ、幅8文字\n- `{price:>8,}` : 右寄せ、3桁区切り\n- `{rate:>6.1f}` : 右寄せ、小数1桁"},
+{type:"code",code:"data = {\"りんご\": 1500, \"バナナ\": 800, \"みかん\": 2400, \"ぶどう\": 3200}\ntotal = sum(data.values())\n\nprint(f\"{'品名':<8}{'売上':>8}{'構成比':>8}\")\nprint(\"-\" * 24)\nfor name, val in data.items():\n    ratio = val / total * 100\n    print(f\"{name:<8}{val:>8,}{ratio:>7.1f}%\")\nprint(\"-\" * 24)\nprint(f\"{'合計':<8}{total:>8,}\")",desc:"f文字列で表組み風レポート"},
+{type:"tip",body:"💡 `{val:>8,}` の `,` は3桁区切りのカンマです。大きな数字が読みやすくなります！"}
+],exercise:{instruction:"items = {\"商品A\": 4500, \"商品B\": 3200, \"商品C\": 7800} の売上レポートを作成。ヘッダ「品名      売上」、区切り線、各商品、区切り線、合計を表示してください。",initialCode:"items = {\"商品A\": 4500, \"商品B\": 3200, \"商品C\": 7800}\n# 表組み風レポートを作ろう\n",expectedOutput:"品名      売上\n----------\n商品A     4500\n商品B     3200\n商品C     7800\n----------\n合計     15500",keywords:["for","print","sum"],answer:"items = {\"商品A\": 4500, \"商品B\": 3200, \"商品C\": 7800}\nprint(f\"{'品名':<6}{'売上':>8}\")\nprint(\"-\" * 10)\nfor name, val in items.items():\n    print(f\"{name:<6}{val:>8}\")\nprint(\"-\" * 10)\nprint(f\"{'合計':<6}{sum(items.values()):>8}\")",hints:["f\"{name:<6}{val:>8}\" で幅指定","sum(items.values()) で合計","- * 10 で区切り線"]}}
 ]}
 ];
