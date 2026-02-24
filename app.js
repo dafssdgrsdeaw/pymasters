@@ -45,7 +45,8 @@ const COURSE_ORDER = [
   'py-start','py-basics','py-control','py-func','py-ds',
   'py-clean','py-error','py-oop',
   'py-janken','py-calc','py-data-auto',
-  'shortcut-master'
+  'shortcut-master',
+  'py-game','py-scraping','py-auto'
 ];
 
 // ===== ERROR TRANSLATION =====
