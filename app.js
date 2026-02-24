@@ -10,6 +10,36 @@ let initC = '';      // initial code for reset
 let checkAttempts = 0; // track check attempts for showing answer btn
 const isMobile = () => window.innerWidth <= 768;
 
+// ===== PRO UNLOCK =====
+const PRO_KEY = 'PYMASTERS_PRO';
+const GUMROAD_URL = 'https://daijyu.gumroad.com/l/olgtn';// ← Gumroad商品URL
+
+function isPro() {
+  return localStorage.getItem('pymasters3_pro') === PRO_KEY;
+}
+
+function unlockPro(key) {
+  if (key === PRO_KEY) {
+    localStorage.setItem('pymasters3_pro', PRO_KEY);
+    return true;
+  }
+  return false;
+}
+
+function isAccessible(course) {
+  return course.free || isPro();
+}
+
+// Check URL param on load: ?pro=PYMASTERS_PRO
+(function checkProParam() {
+  const params = new URLSearchParams(window.location.search);
+  const proKey = params.get('pro');
+  if (proKey && unlockPro(proKey)) {
+    // Clean URL after unlock
+    history.replaceState(null, '', window.location.pathname + window.location.hash);
+  }
+})();
+
 // ===== COURSE ORDER (for nextCourse navigation) =====
 const COURSE_ORDER = [
   'py-start','py-basics','py-control','py-func','py-ds',
@@ -211,7 +241,7 @@ function heroCTAClick() {
 function findNextLesson(p) {
   for (const cid of COURSE_ORDER) {
     const c = COURSES.find(x => x.id === cid);
-    if (!c || !c.free) continue;
+    if (!c || !isAccessible(c)) continue;
     for (let i = 0; i < c.lessons.length; i++) {
       if (!p.done.includes(c.lessons[i].id)) {
         return { courseId: c.id, lessonIndex: i };
@@ -268,11 +298,11 @@ function render() {
     const lvMap = { b: 'lv-b', i: 'lv-i', a: 'lv-a', s: 'lv-s' };
     const lvLabel = { b: '初心者', i: '中級', a: '上級', s: 'スキル' };
     const isComplete = pct === 100;
-    const clickAction = c.free
+    const clickAction = isAccessible(c)
       ? `openCourse('${c.id}')`
       : `previewPro('${c.id}')`;
 
-    const card = `<div class="course-card ${c.free ? '' : 'locked'} ${gradMap[c.level] || ''}" onclick="${clickAction}">
+    const card = `<div class="course-card ${isAccessible(c) ? '' : 'locked'} ${gradMap[c.level] || ''}" onclick="${clickAction}">
       ${isComplete ? '<div class="cc-clear-badge">✅ クリア済み</div>' : ''}
       <div class="cc-icon">${c.icon}</div>
       <h4>${c.title}</h4>
@@ -925,14 +955,14 @@ function getNextCourse(currentId) {
   const current = COURSES.find(x => x.id === currentId);
   if (current && current.nextCourse) {
     const nc = COURSES.find(x => x.id === current.nextCourse);
-    if (nc && nc.free) return nc;
+    if (nc && isAccessible(nc)) return nc;
   }
   // Fallback to COURSE_ORDER
   const idx = COURSE_ORDER.indexOf(currentId);
   if (idx >= 0 && idx < COURSE_ORDER.length - 1) {
     const nextId = COURSE_ORDER[idx + 1];
     const nc = COURSES.find(x => x.id === nextId);
-    if (nc && nc.free) return nc;
+    if (nc && isAccessible(nc)) return nc;
   }
   return null;
 }
@@ -1032,6 +1062,10 @@ function previewPro(cid) {
 
 function closePremium() {
   document.getElementById('premiumMo').classList.remove('on');
+}
+
+function openGumroad() {
+  window.open(GUMROAD_URL, '_blank');
 }
 
 // ===== EDITOR SHORTCUTS (VS Code style) =====

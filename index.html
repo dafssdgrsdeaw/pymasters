@@ -114,7 +114,7 @@
     <div class="premium-banner">
       <h4>🔓 PROプランで全コース解放</h4>
       <p>ミニゲーム開発・Webスクレイピング・自動化など、実践コースにアクセスできます</p>
-      <button class="btn btn-p btn-l" onclick="alert('決済機能は準備中です。Stripe連携後に有効になります。')">PROプランを見る</button>
+      <button class="btn btn-p btn-l" onclick="openGumroad()">PROプランを見る</button>
     </div>
   </div>
 
@@ -205,7 +205,7 @@
     <h3>第3条（禁止事項）</h3><ul><li>本サービスのコンテンツの無断転載・複製・販売</li><li>サービスの逆コンパイル・リバースエンジニアリング</li><li>不正アクセスやサーバーへの過度な負荷</li><li>他のユーザーへの迷惑行為</li></ul>
     <h3>第4条（知的財産権）</h3><p>本サービスに含まれるすべてのコンテンツの著作権は運営者に帰属します。</p>
     <h3>第5条（免責事項）</h3><p>本サービスは教育目的で提供されており、内容の正確性や完全性を保証するものではありません。</p>
-    <h3>第6条（有料サービス）</h3><p>PROプランの決済はStripe社を通じて行われます。解約はいつでも可能です。返金は原則として行いません。</p>
+    <h3>第6条（有料サービス）</h3><p>PROプランの決済はGumroad社を通じて行われます。解約はいつでも可能です。返金はGumroad社の規定に従います。</p>
     <h3>第7条（規約の変更）</h3><p>運営者は本規約を変更できるものとし、変更後の規約は本ページにて公表した時点で効力を生じます。</p>
   </div>
 </div>
@@ -230,7 +230,7 @@
       <tr><td class="law-th">所在地</td><td>請求があった場合に遅滞なく開示します</td></tr>
       <tr><td class="law-th">連絡先</td><td>daijyu150m@gmail.com</td></tr>
       <tr><td class="law-th">販売価格</td><td>各サービスページに表示する価格（税込）</td></tr>
-      <tr><td class="law-th">支払方法</td><td>クレジットカード（Stripe経由）</td></tr>
+      <tr><td class="law-th">支払方法</td><td>クレジットカード（Gumroad経由）</td></tr>
       <tr><td class="law-th">引渡し時期</td><td>決済完了後、即時利用可能</td></tr>
       <tr><td class="law-th">返品・キャンセル</td><td>デジタルコンテンツの性質上、原則返金不可。解約はいつでも可能。</td></tr>
     </table>
@@ -280,7 +280,7 @@
       <div class="premium-cta">
         <h3>🔒 この先はPROプラン限定</h3>
         <p>全ての応用コースにアクセスできます</p>
-        <button class="btn btn-p btn-l" onclick="alert('Stripe連携後に有効になります');closePremium()">PROプランを見る</button>
+        <button class="btn btn-p btn-l" onclick="openGumroad();closePremium()">PROプランを見る</button>
         <button class="btn btn-o" onclick="closePremium()" style="margin-top:8px">閉じる</button>
       </div>
     </div>
