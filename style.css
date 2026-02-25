@@ -304,7 +304,7 @@ button{cursor:pointer}
 }
 .features-sec::before{
   content:'';position:absolute;top:-35px;left:50%;width:240px;height:1px;
-  transform:translateX(-50%);background:linear-gradient(90deg,transparent,#ffffff0c,transparent);
+  transform:translateX(-50%);background:linear-gradient(90deg,transparent,#ffffff0c,transparent);pointer-events:none;
 }
 .feature-card{
   background:#0a0a10e0;
@@ -316,13 +316,13 @@ button{cursor:pointer}
 }
 .feature-card::before{
   content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
-  background:var(--fc-a,#3b82f6);opacity:0;transition:all .4s ease;
+  background:var(--fc-a,#3b82f6);opacity:0;transition:all .4s ease;pointer-events:none;
 }
 .feature-card::after{
   content:'';position:absolute;top:-30px;left:50%;width:80px;height:80px;
   transform:translateX(-50%);
   background:radial-gradient(circle,var(--fc-a,#3b82f6)20,transparent 70%);
-  opacity:0;transition:opacity .4s ease;filter:blur(25px);
+  opacity:0;transition:opacity .4s ease;filter:blur(25px);pointer-events:none;
 }
 .feature-card:hover{border-color:#ffffff12;transform:translateY(-5px);box-shadow:0 16px 50px var(--fc-g,#3b82f608)}
 .feature-card:hover::before{opacity:.6;left:10%;right:10%}
@@ -371,7 +371,7 @@ button{cursor:pointer}
 }
 .course-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,#22c55e,#3b82f6);opacity:0;transition:opacity .3s ease;
+  background:linear-gradient(90deg,#22c55e,#3b82f6);opacity:0;transition:opacity .3s ease;pointer-events:none;
 }
 .course-card:hover{
   border-color:#ffffff12;
@@ -428,7 +428,7 @@ button{cursor:pointer}
   position:relative;overflow:hidden;
 }
 .premium-banner::before{
-  content:'';position:absolute;inset:0;
+  content:'';position:absolute;inset:0;pointer-events:none;
   background:conic-gradient(from 0deg at 50% 50%,transparent,#22c55e06,transparent,#3b82f606,transparent);
   animation:rotateConic 15s linear infinite;
 }
@@ -782,7 +782,7 @@ button{cursor:pointer}
 .cex-desc{
   padding:8px 14px;border-top:1px solid #ffffff06;
   font-size:.82rem;color:#a1a1aa;line-height:1.6;
-  background:#0a0a10e008;
+  background:#0a0a1008;
 }
 
 /* tip block */
@@ -850,7 +850,7 @@ button{cursor:pointer}
 
 .exercise-inst{
   padding:14px 20px;
-  background:#0a0a10e080;
+  background:#0a0a1080;
   border-bottom:1px solid #ffffff06;
   font-size:.9rem;line-height:1.7;color:#d4d4d8;
 }
@@ -1009,7 +1009,7 @@ button{cursor:pointer}
   position:fixed;bottom:0;left:0;right:0;
   z-index:800;
   padding:8px 12px;
-  background:#0a0a10e0f5;
+  background:#0a0a10f5;
   border-top:1px solid #ffffff06;
   backdrop-filter:blur(12px);
   gap:8px;
