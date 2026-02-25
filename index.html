@@ -2,590 +2,388 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyMasters - Final Design</title>
+<title>PyMasters - Python学習プラットフォーム | 無料でPythonをマスター</title>
+<meta name="description" content="ブラウザだけでPythonを学べる無料プログラミング学習サイト。コード実行・自動採点・XPシステム搭載。初心者から上級者まで。">
+<meta name="keywords" content="Python,プログラミング,学習,無料,初心者,コーディング,プログラミング教育">
+<meta property="og:title" content="PyMasters - Python学習プラットフォーム">
+<meta property="og:description" content="ブラウザだけでPythonを学べる無料プログラミング学習サイト">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://pymasters.dev/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PyMasters - Python学習プラットフォーム">
+<meta name="twitter:description" content="ブラウザだけでPythonを学べる無料プログラミング学習サイト">
+<meta name="twitter:image" content="https://pymasters.dev/ogp.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TF5LHTEM7G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-TF5LHTEM7G');
+</script>
+<!-- Google AdSense: 自分のIDに置き換えてください -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+<!-- Pyodide: lazy loaded when entering lesson page -->
+<!-- Google Fonts: Fira Code for editor -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:#06060a;color:#fafafa;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-
-/* ── MATRIX CANVAS ── */
-#matrixCanvas{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  z-index:0;opacity:.3;pointer-events:none;
-}
-
-/* ── HEADER ── */
-.hdr{
-  position:sticky;top:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 24px;height:56px;
-  background:#06060ae8;
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid #ffffff06;
-}
-.logo{display:flex;align-items:center;gap:10px;cursor:pointer}
-.logo-icon{width:28px;height:28px;border-radius:6px}
-.logo h1{font-size:1.05rem;font-weight:800;letter-spacing:-.02em}
-.hdr-right{display:flex;align-items:center;gap:10px}
-.badge{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:4px 10px;border-radius:8px;font-size:.75rem;font-weight:600;
-  background:#ffffff06;border:1px solid #ffffff0a;
-}
-
-.badge-xp{position:relative}
-.xpbar-mini{width:100%;height:3px;background:#ffffff0a;border-radius:2px;margin-top:3px;overflow:hidden}
-.xpbar-fill{height:100%;background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:2px}
-.search-btn{
-  background:none;border:1px solid #ffffff0a;border-radius:8px;
-  padding:4px 10px;cursor:pointer;font-size:.9rem;
-  transition:all .2s ease;
-}
-.search-btn:hover{background:#ffffff08;border-color:#ffffff15}
-
-/* ── PROMO STRIP ── */
-.promo-strip{
-  position:relative;z-index:2;
-  background:linear-gradient(90deg,#06060a,#0f2e1a80,#06060a);
-  border-bottom:1px solid #22c55e15;
-  padding:10px 24px;text-align:center;
-}
-.promo-strip-text{font-size:.84rem;color:#a1a1aa}
-.promo-strip-text strong{color:#4ade80;font-weight:700}
-.promo-code-inline{
-  font-family:'Fira Code',monospace;font-weight:700;color:#4ade80;
-  background:#22c55e12;padding:2px 8px;border-radius:4px;
-  border:1px dashed #22c55e35;margin:0 4px;
-}
-
-/* ── HERO ── */
-.hero{
-  position:relative;z-index:1;
-  min-height:calc(100vh - 112px);
-  display:flex;align-items:center;justify-content:center;
-  text-align:center;
-  padding:60px 24px;
-}
-.hero-content{max-width:680px;position:relative}
-
-/* Floating code fragments */
-.float-code{
-  position:absolute;
-  font-family:'Fira Code',monospace;font-size:.75rem;
-  color:#22c55e;opacity:0;white-space:nowrap;pointer-events:none;
-  animation:floatIn 1s ease forwards,floatDrift 20s ease-in-out infinite;
-}
-.fc-1{top:5%;left:-40%;animation-delay:.2s,.2s}
-.fc-2{top:25%;right:-45%;animation-delay:.5s,.5s;color:#3b82f6}
-.fc-3{bottom:25%;left:-35%;animation-delay:.8s,.8s;color:#f59e0b}
-.fc-4{top:55%;right:-40%;animation-delay:1.1s,1.1s;color:#22d3ee}
-.fc-5{bottom:5%;right:-20%;animation-delay:1.4s,1.4s;color:#a855f7}
-@keyframes floatIn{from{opacity:0;transform:translateY(10px)}to{opacity:.18;transform:translateY(0)}}
-@keyframes floatDrift{0%,100%{transform:translateY(0) translateX(0)}50%{transform:translateY(-20px) translateX(10px)}}
-
-.hero-tag{
-  display:inline-flex;align-items:center;gap:8px;
-  margin-bottom:28px;animation:fadeUp .5s ease both;
-}
-.hero-tag-python{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:5px 14px;border-radius:100px;
-  background:linear-gradient(135deg,#3b82f618,#f59e0b18);
-  border:1px solid #f59e0b25;
-  font-size:.78rem;font-weight:700;color:#fbbf24;
-}
-.hero-tag-python svg{width:14px;height:14px}
-.hero-tag-free{
-  padding:5px 12px;border-radius:100px;
-  background:#22c55e10;border:1px solid #22c55e25;
-  font-size:.75rem;font-weight:700;color:#4ade80;
-}
-
-.hero h2{
-  font-size:3.4rem;font-weight:900;line-height:1.1;
-  letter-spacing:-.05em;margin-bottom:22px;
-  animation:fadeUp .5s ease .1s both;
-}
-.hero em{
-  font-style:normal;
-  background:linear-gradient(135deg,#4ade80 0%,#22d3ee 60%,#3b82f6 100%);
-  background-size:200% auto;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  animation:shimmer 5s ease-in-out infinite;
-}
-@keyframes shimmer{0%,100%{background-position:0% center}50%{background-position:200% center}}
-
-.hero p{
-  color:#71717a;font-size:1.08rem;line-height:1.8;
-  margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;
-  animation:fadeUp .5s ease .2s both;
-}
-
-.hero-cta-group{
-  display:flex;align-items:center;justify-content:center;gap:14px;
-  margin-bottom:44px;animation:fadeUp .5s ease .3s both;
-}
-.hero-cta{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:15px 38px;border-radius:12px;border:none;cursor:pointer;
-  font-size:1rem;font-weight:700;color:#000;
-  background:linear-gradient(135deg,#4ade80,#22c55e);
-  box-shadow:0 0 50px #22c55e35,0 4px 20px #22c55e25;
-  transition:all .3s ease;
-}
-.hero-cta:hover{transform:translateY(-2px);box-shadow:0 0 70px #22c55e50,0 8px 30px #22c55e35}
-.hero-cta-secondary{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:15px 26px;border-radius:12px;border:1px solid #ffffff12;
-  cursor:pointer;font-size:.92rem;font-weight:600;color:#a1a1aa;
-  background:#ffffff06;transition:all .3s ease;
-}
-.hero-cta-secondary:hover{border-color:#ffffff25;color:#fafafa;background:#ffffff0a}
-
-/* Stats */
-.hero-stats{
-  display:inline-flex;align-items:center;gap:0;
-  background:#06060acc;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border:1px solid #ffffff08;border-radius:14px;
-  padding:14px 0;
-  animation:fadeUp .5s ease .4s both;
-}
-.hero-stat{display:flex;flex-direction:column;align-items:center;padding:0 28px}
-.hero-stat-num{
-  font-size:1.5rem;font-weight:900;color:#fafafa;
-  font-family:'Space Mono',monospace;font-variant-numeric:tabular-nums;
-}
-.hero-stat-label{font-size:.7rem;color:#52525b;margin-top:3px;font-weight:500;text-transform:uppercase;letter-spacing:.08em}
-.hero-stat-sep{width:1px;height:32px;background:#ffffff0a}
-
-/* ── PROGRESS CARD ── */
-.progress-card{
-  margin-top:28px;padding:18px 22px;border-radius:14px;
-  background:#0a0a10e0;backdrop-filter:blur(6px);
-  border:1px solid #ffffff08;
-  animation:fadeUp .5s ease .45s both;
-}
-.progress-card h4{font-size:.88rem;font-weight:700;margin-bottom:10px}
-.progress-bar{height:6px;background:#ffffff08;border-radius:4px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#4ade80);border-radius:4px;transition:width .8s ease}
-.progress-text{font-size:.75rem;color:#71717a;margin-top:6px}
-
-/* ── NEXT RECOMMEND ── */
-.next-recommend{
-  margin-top:12px;padding:10px 16px;border-radius:10px;
-  background:#f59e0b08;border:1px solid #f59e0b15;
-  font-size:.82rem;
-  animation:fadeUp .5s ease .5s both;
-  cursor:pointer;transition:all .2s ease;
-}
-.next-recommend:hover{background:#f59e0b12;border-color:#f59e0b25}
-.nr-label{color:#fbbf24;font-weight:700;margin-right:6px}
-.nr-course{color:#a1a1aa}
-
-/* ── FEATURES ── */
-.features-sec{
-  position:relative;z-index:2;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
-  max-width:1000px;margin:0 auto;padding:0 24px 70px;
-}
-.features-sec::before{
-  content:'';position:absolute;top:-35px;left:50%;width:240px;height:1px;
-  transform:translateX(-50%);background:linear-gradient(90deg,transparent,#ffffff0c,transparent);
-}
-.feature-card{
-  background:#0a0a10e0;
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  border:1px solid #ffffff06;border-radius:14px;
-  padding:26px 18px;text-align:center;
-  transition:all .4s cubic-bezier(.23,1,.32,1);
-  position:relative;overflow:hidden;
-}
-.feature-card::before{
-  content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
-  background:var(--fc-a,#3b82f6);opacity:0;transition:all .4s ease;
-}
-.feature-card::after{
-  content:'';position:absolute;top:-30px;left:50%;width:80px;height:80px;
-  transform:translateX(-50%);
-  background:radial-gradient(circle,var(--fc-a,#3b82f6)20,transparent 70%);
-  opacity:0;transition:opacity .4s ease;filter:blur(25px);
-}
-.feature-card:hover{border-color:#ffffff12;transform:translateY(-5px);box-shadow:0 16px 50px var(--fc-g,#3b82f608)}
-.feature-card:hover::before{opacity:.6;left:10%;right:10%}
-.feature-card:hover::after{opacity:1}
-.feature-card:nth-child(1){--fc-a:#3b82f6;--fc-g:#3b82f60a}
-.feature-card:nth-child(2){--fc-a:#22c55e;--fc-g:#22c55e0a}
-.feature-card:nth-child(3){--fc-a:#f59e0b;--fc-g:#f59e0b0a}
-.feature-card:nth-child(4){--fc-a:#a855f7;--fc-g:#a855f70a}
-.feature-icon{
-  width:48px;height:48px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;margin:0 auto 14px;
-}
-.fi-blue{background:#3b82f612;border:1px solid #3b82f618}
-.fi-green{background:#22c55e12;border:1px solid #22c55e18}
-.fi-amber{background:#f59e0b12;border:1px solid #f59e0b18}
-.fi-purple{background:#a855f712;border:1px solid #a855f718}
-.feature-card h4{font-size:.88rem;font-weight:700;margin-bottom:5px;color:#e4e4e7}
-.feature-card p{font-size:.78rem;color:#71717a;line-height:1.5}
-
-/* ── COURSES ── */
-.courses-sec{
-  position:relative;z-index:2;
-  max-width:1000px;margin:0 auto;padding:0 24px 70px;
-}
-.courses-sec h3{font-size:1.15rem;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.courses-sub{font-size:.84rem;color:#52525b;margin-bottom:18px}
-.pro-tag{font-size:.7rem;background:#f59e0b15;color:#fbbf24;padding:3px 10px;border-radius:100px;margin-left:6px;font-weight:700}
-
-.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
-.course-card{
-  background:#0a0a10e0;backdrop-filter:blur(6px);
-  border:1px solid #ffffff06;border-radius:14px;padding:18px;
-  transition:all .3s ease;cursor:pointer;position:relative;overflow:hidden;
-}
-.course-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,#22c55e,#3b82f6);opacity:0;transition:opacity .3s ease;
-}
-.course-card:hover{border-color:#ffffff12;transform:translateY(-3px);box-shadow:0 12px 40px #00000030}
-.course-card:hover::before{opacity:1}
-.course-emoji{font-size:1.5rem;margin-bottom:6px;display:block}
-.course-name{font-size:.88rem;font-weight:700;margin-bottom:3px}
-.course-meta{font-size:.72rem;color:#52525b}
-.course-bar{height:3px;background:#ffffff08;border-radius:4px;margin-top:10px;overflow:hidden}
-.course-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
-.cbf-complete{background:linear-gradient(90deg,#22c55e,#4ade80)}
-.cbf-progress{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
-
-/* Premium Banner */
-.premium-banner{
-  margin-top:32px;padding:36px 32px;border-radius:18px;
-  background:#0a0a10e0;backdrop-filter:blur(6px);
-  border:1px solid #22c55e12;text-align:center;
-  position:relative;overflow:hidden;
-}
-.premium-banner::before{
-  content:'';position:absolute;inset:0;
-  background:conic-gradient(from 0deg at 50% 50%,transparent,#22c55e06,transparent,#3b82f606,transparent);
-  animation:rc 15s linear infinite;
-}
-@keyframes rc{to{transform:rotate(360deg)}}
-.premium-banner h4{font-size:1.08rem;font-weight:800;margin-bottom:8px;position:relative}
-.premium-banner>p{font-size:.86rem;color:#71717a;margin-bottom:18px;position:relative}
-.promo-badge-banner{
-  display:inline-block;padding:4px 14px;border-radius:100px;
-  background:#22c55e15;border:1px solid #22c55e30;
-  font-size:.72rem;font-weight:700;color:#4ade80;
-  margin-bottom:14px;position:relative;
-  animation:promoPulse 2s ease-in-out infinite;
-}
-@keyframes promoPulse{0%,100%{box-shadow:0 0 0 0 #22c55e25}50%{box-shadow:0 0 0 6px #22c55e00}}
-.promo-code-box{
-  display:inline-flex;flex-direction:column;align-items:center;gap:4px;
-  padding:14px 28px;border-radius:12px;
-  background:#22c55e08;border:2px dashed #22c55e30;
-  margin-bottom:18px;position:relative;
-}
-.promo-code-label{font-size:.7rem;color:#71717a;text-transform:uppercase;letter-spacing:.06em}
-.promo-code-value{
-  font-family:'Fira Code',monospace;font-size:1.3rem;font-weight:700;
-  color:#4ade80;letter-spacing:.1em;
-}
-.promo-code-desc{font-size:.78rem;color:#4ade80;font-weight:600}
-.premium-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:12px 28px;border-radius:10px;border:none;cursor:pointer;
-  font-size:.9rem;font-weight:700;color:#000;
-  background:linear-gradient(135deg,#4ade80,#22c55e);
-  box-shadow:0 0 30px #22c55e25;transition:all .3s ease;position:relative;
-}
-.premium-btn:hover{box-shadow:0 0 50px #22c55e40;transform:translateY(-2px)}
-
-/* ── FOOTER ── */
-.ftr{position:relative;z-index:2;text-align:center;padding:40px 24px;border-top:1px solid #ffffff06}
-.ftr-links{display:flex;gap:20px;justify-content:center;margin-bottom:12px}
-.ftr-links a{color:#3f3f46;font-size:.8rem;text-decoration:none;transition:color .2s}
-.ftr-links a:hover{color:#71717a}
-.ftr small{color:#27272a;font-size:.75rem}
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── RESPONSIVE ── */
-@media(max-width:768px){
-  .hero{padding:48px 20px;min-height:auto}
-  .hero h2{font-size:2.2rem}
-  .hero p{font-size:.98rem}
-  .hero-stats{padding:10px 0}
-  .hero-stat{padding:0 18px}
-  .hero-stat-num{font-size:1.2rem}
-  .features-sec{grid-template-columns:1fr 1fr;gap:10px}
-  .course-grid{grid-template-columns:1fr}
-  .float-code{display:none}
-}
-@media(max-width:480px){
-  .hero h2{font-size:1.8rem}
-  .features-sec{grid-template-columns:1fr}
-  .hero-stats{flex-wrap:wrap;justify-content:center;gap:8px}
-  .hero-stat-sep{display:none}
-  .hero-cta-group{flex-direction:column}
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- Matrix Code Rain Background -->
 <canvas id="matrixCanvas"></canvas>
 
-<!-- HEADER -->
+<!-- Pyodide Loading (shown in editor area, not full page) -->
+
+<!-- ===== HEADER ===== -->
 <header class="hdr">
-  <div class="logo">
+  <div class="logo" onclick="nav('home')">
     <img class="logo-icon" src="icon-192x192.png" alt="PyMasters">
     <h1>PyMasters</h1>
   </div>
   <div class="hdr-right">
-    <button class="search-btn" title="用語検索">🔍</button>
-    <div class="badge">🔥 3日</div>
-    <div class="badge">⭐ Lv.5</div>
-    <div class="badge badge-xp">✨ 420 XP
-      <div class="xpbar-mini"><div class="xpbar-fill" style="width:65%"></div></div>
+    <button class="search-btn" onclick="openSearch()" title="用語検索">🔍</button>
+    <div class="hdr-stats">
+      <div class="badge st-c"><span>🔥</span><span id="stN">0</span>日</div>
+      <div class="badge lv-c"><span>⭐</span>Lv.<span id="lvN">1</span></div>
+      <div class="badge xp-c"><span>✨</span><span id="xpN">0</span>XP
+        <div class="xpbar-m"><div class="xpbar-f" id="xpF" style="width:0%"></div></div>
+      </div>
     </div>
   </div>
 </header>
 
-<!-- PROMO -->
-<div class="promo-strip">
+<!-- ===== PROMO STRIP ===== -->
+<div class="promo-strip" id="promoStrip">
   <span class="promo-strip-text">
     <strong>🎉 期間限定</strong> — PROコースが無料！コード <span class="promo-code-inline">PYTHON0</span> を入力 →
   </span>
 </div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="float-code fc-1">def fibonacci(n):</div>
-  <div class="float-code fc-2">for i in range(10):</div>
-  <div class="float-code fc-3">print("Hello, World!")</div>
-  <div class="float-code fc-4">if __name__ == "__main__":</div>
-  <div class="float-code fc-5">import numpy as np</div>
+<!-- ===== SEARCH MODAL (用語検索) ===== -->
+<div class="modal-overlay" id="searchModal">
+  <div class="search-modal">
+    <div class="search-modal-header">
+      <input type="text" id="searchInput" placeholder="用語を検索... 例: 変数、リスト、for文" oninput="doSearch(this.value)" autocomplete="off">
+      <button class="close-btn" onclick="closeSearch()">✕</button>
+    </div>
+    <div class="search-results" id="searchResults">
+      <div class="search-placeholder">🔍 プログラミング用語を検索してみよう</div>
+    </div>
+  </div>
+</div>
 
-  <div class="hero-content">
-    <div class="hero-tag">
-      <span class="hero-tag-python">
-        <svg viewBox="0 0 256 255" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid"><path d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072zM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13z" fill="#4ade80"/><path d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.518 33.897zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13z" fill="#3b82f6"/></svg>
-        Python学習
-      </span>
-      <span class="hero-tag-free">✦ 無料</span>
-    </div>
-    <h2>コードを書いて<br><em>実力をつけよう</em></h2>
-    <p>やさしい解説と実践的な演習で、<br>楽しく確実にPythonが身につく。<br>インストール不要、ブラウザだけでOK。</p>
-    <div class="hero-cta-group">
-      <button class="hero-cta">🚀 学習を始める</button>
-      <button class="hero-cta-secondary">📖 コース一覧</button>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <span class="hero-stat-num" data-target="56">0</span>
-        <span class="hero-stat-label">Lessons</span>
+<!-- ===== GLOSSARY POPUP (用語ポップアップ) ===== -->
+<div class="glossary-popup" id="glossaryPopup">
+  <div class="glossary-popup-header">
+    <span class="glossary-popup-title" id="gpTitle"></span>
+    <button class="close-btn-sm" onclick="closeGlossary()">✕</button>
+  </div>
+  <div class="glossary-popup-short" id="gpShort"></div>
+  <div class="glossary-popup-detail" id="gpDetail"></div>
+  <div class="glossary-popup-example" id="gpExample" style="display:none">
+    <div class="gp-ex-label">コード例:</div>
+    <pre class="gp-ex-code" id="gpExCode"></pre>
+  </div>
+  <div class="glossary-popup-related" id="gpRelated"></div>
+</div>
+
+<!-- ===== HOME PAGE ===== -->
+<div class="pg on" id="pg-home">
+  <div class="hero">
+    <!-- Floating code fragments -->
+    <div class="float-code fc-1">def fibonacci(n):</div>
+    <div class="float-code fc-2">for i in range(10):</div>
+    <div class="float-code fc-3">print("Hello, World!")</div>
+    <div class="float-code fc-4">if __name__ == "__main__":</div>
+    <div class="float-code fc-5">import numpy as np</div>
+
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="hero-tag-python">
+          <svg viewBox="0 0 256 255" width="14" height="14" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid"><path d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072zM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13z" fill="#4ade80"/><path d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.518 33.897zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13z" fill="#3b82f6"/></svg>
+          Python学習
+        </span>
+        <span class="hero-tag-free">✦ 無料</span>
       </div>
-      <div class="hero-stat-sep"></div>
-      <div class="hero-stat">
-        <span class="hero-stat-num" data-target="15">0</span>
-        <span class="hero-stat-label">Courses</span>
+      <h2>コードを書いて<br><em>実力をつけよう</em></h2>
+      <p>やさしい解説と実践的な演習で、<br>楽しく確実にPythonが身につく。<br>インストール不要、ブラウザだけでOK。</p>
+      <div class="hero-cta-group">
+        <button class="btn btn-p btn-l hero-cta-main" id="heroCTA" onclick="heroCTAClick()">🚀 学習を始める</button>
+        <button class="btn btn-o hero-cta-sub" onclick="document.getElementById('csec').scrollIntoView({behavior:'smooth'})">📖 コース一覧</button>
       </div>
-      <div class="hero-stat-sep"></div>
-      <div class="hero-stat">
-        <span class="hero-stat-num" data-target="100" data-suffix="%">0%</span>
-        <span class="hero-stat-label">Free</span>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="hero-stat-num" data-target="56">0</span><span class="hero-stat-label">Lessons</span></div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat"><span class="hero-stat-num" data-target="15">0</span><span class="hero-stat-label">Courses</span></div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat"><span class="hero-stat-num" data-target="100" data-suffix="%">0%</span><span class="hero-stat-label">Free</span></div>
+      </div>
+      <div class="progress-card">
+        <h3>📊 あなたの学習進捗</h3>
+        <div class="pbar"><div class="pbar-f" id="oP" style="width:0%"></div></div>
+        <div class="ptxt" id="oPT">0 / 0 レッスン完了</div>
+      </div>
+      <div class="next-recommend" id="nextRecommend" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="features-sec">
+    <div class="feature-card"><div class="feature-icon fi-blue">▶</div><h4>ブラウザで実行</h4><p>インストール不要。<br>書いたコードをその場で実行</p></div>
+    <div class="feature-card"><div class="feature-icon fi-green">✓</div><h4>自動採点</h4><p>コードを自動チェック。<br>即座にフィードバック</p></div>
+    <div class="feature-card"><div class="feature-icon fi-amber">⭐</div><h4>XP & レベル</h4><p>学習でXPを獲得。<br>レベルアップで達成感</p></div>
+    <div class="feature-card"><div class="feature-icon fi-purple">💡</div><h4>段階的ヒント</h4><p>つまずいても安心。<br>段階的にサポート</p></div>
+  </div>
+
+  <div class="ad-slot" style="display:none"><p>広告エリア（AdSense配置位置）</p></div>
+
+  <div class="courses-sec" id="csec">
+    <h3>📚 無料コース</h3>
+    <p class="courses-sub">基礎から応用まで、段階的にPythonを学べる12コース</p>
+    <div class="course-grid" id="cg"></div>
+
+    <h3 style="margin-top:40px">⭐ PROコース <span class="pro-label">有料</span></h3>
+    <div class="course-grid" id="cg-pro"></div>
+    <div class="premium-banner">
+      <div class="promo-badge-banner">🎉 期間限定キャンペーン中</div>
+      <h4>🔓 PROプランで全コース解放</h4>
+      <p>ミニゲーム開発・Webスクレイピング・自動化など、実践コースにアクセスできます</p>
+      <div class="promo-code-box">
+        <div class="promo-code-label">プロモコード</div>
+        <div class="promo-code-value">PYTHON0</div>
+        <div class="promo-code-desc">→ 無料で解放！</div>
+      </div>
+      <button class="btn btn-p btn-l" onclick="openGumroad()">PROプランを見る</button>
+    </div>
+  </div>
+
+  <div class="ad-slot" style="display:none"><p>広告エリア（AdSense配置位置）</p></div>
+
+  <footer class="ftr">
+    <div class="ftr-links">
+      <a href="#" onclick="nav('terms');return false">利用規約</a>
+      <a href="#" onclick="nav('privacy');return false">プライバシーポリシー</a>
+      <a href="#" onclick="nav('law');return false">特定商取引法に基づく表記</a>
+    </div>
+    <small>&copy; 2026 PyMasters. All rights reserved.</small>
+  </footer>
+</div>
+
+<!-- ===== COURSE DETAIL PAGE ===== -->
+<div class="pg" id="pg-course">
+  <div class="course-detail">
+    <div class="back-link" onclick="nav('home')">← コース一覧に戻る</div>
+    <div id="cdH"></div>
+    <div class="lesson-list" id="lL"></div>
+  </div>
+</div>
+
+<!-- ===== LESSON PAGE ===== -->
+<div class="pg" id="pg-lesson">
+  <div class="lesson-page">
+    <div class="lesson-content" id="lcEl"></div>
+    <div class="editor-panel" id="editorPanel">
+      <!-- Pyodide loading overlay (shown over editor only) -->
+      <div class="pyodide-loading" id="pyodideLoading" style="display:none">
+        <div class="pyodide-loading-inner">
+          <div class="pyodide-spinner"></div>
+          <div class="pyodide-loading-text">🐍 Python環境を準備中…</div>
+          <div class="pyodide-progress-bar"><div class="pyodide-progress-fill" id="pyodideProgressFill"></div></div>
+          <div class="pyodide-progress-text" id="pyodideProgressText">0%</div>
+          <div class="pyodide-cache-note">初回は少し時間がかかりますが、2回目以降はキャッシュで高速です</div>
+        </div>
+      </div>
+      <div class="ep-header">
+        <div class="ep-file-tab">
+          <div class="ep-tab active">🐍 lesson.py</div>
+        </div>
+        <div class="ep-actions">
+          <button class="btn btn-s" onclick="rstCode()">↺ リセット</button>
+          <button class="btn btn-p" onclick="runCode()">▶ 実行</button>
+          <button class="btn btn-g" onclick="chkAns()">✓ 答え合わせ</button>
+        </div>
+      </div>
+      <div class="exercise-inst" id="eiEl"></div>
+      <div class="editor-wrapper">
+        <div class="editor-highlight-layer" id="edHL" aria-hidden="true"></div>
+        <div class="editor-line-numbers" id="edLN" aria-hidden="true"></div>
+        <textarea class="code-editor" id="edEl" spellcheck="false"></textarea>
+      </div>
+      <div class="editor-status editor-status-pc">
+        <span>Enter: 実行</span>
+        <span>Shift+Enter: 改行</span>
+        <span>Ctrl+/: コメント</span>
+        <span>Alt+↑↓: 行移動</span>
+      </div>
+      <div class="hint-toggle" id="htEl" onclick="togHint()">💡 ヒントを見る</div>
+      <div class="hint-panel" id="hpEl" style="display:none"></div>
+      <div class="output-panel">
+        <div class="output-header">出力</div>
+        <div class="output-content" id="opEl">ここに実行結果が表示されます</div>
+      </div>
+      <div class="lesson-nav">
+        <button class="btn btn-o" id="pvBtn" onclick="pvL()">← 前へ</button>
+        <button class="btn btn-o" id="showAnsBtn" onclick="showAnswer()" style="display:none">👁 答えを見る</button>
+        <button class="btn btn-o" id="nxBtn" onclick="nxL()">次へ →</button>
+      </div>
+      <div class="lesson-nav-sub">
+        <a href="#" onclick="openCourse(cCrs.id);return false">📚 コース一覧に戻る</a>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Progress Card -->
-    <div class="progress-card">
-      <h4>📊 あなたの学習進捗</h4>
-      <div class="progress-bar"><div class="progress-fill" style="width:18%"></div></div>
-      <div class="progress-text">10 / 56 レッスン完了</div>
+<!-- ===== LEGAL PAGES ===== -->
+<div class="pg" id="pg-terms">
+  <div class="legal-page">
+    <div class="back-link" onclick="nav('home')">← トップに戻る</div>
+    <h2>利用規約</h2>
+    <p>最終更新日: 2026年2月</p>
+    <h3>第1条（適用）</h3><p>本規約は、PyMasters（以下「本サービス」）の利用条件を定めるものです。ユーザーは本規約に同意の上、本サービスを利用するものとします。</p>
+    <h3>第2条（サービス内容）</h3><p>本サービスは、プログラミング学習のための教育コンテンツを提供するWebサービスです。コンテンツは無料プランと有料プラン（PROプラン）があります。</p>
+    <h3>第3条（禁止事項）</h3><ul><li>本サービスのコンテンツの無断転載・複製・販売</li><li>サービスの逆コンパイル・リバースエンジニアリング</li><li>不正アクセスやサーバーへの過度な負荷</li><li>他のユーザーへの迷惑行為</li></ul>
+    <h3>第4条（知的財産権）</h3><p>本サービスに含まれるすべてのコンテンツの著作権は運営者に帰属します。</p>
+    <h3>第5条（免責事項）</h3><p>本サービスは教育目的で提供されており、内容の正確性や完全性を保証するものではありません。</p>
+    <h3>第6条（有料サービス）</h3><p>PROプランの決済はGumroad社を通じて行われます。解約はいつでも可能です。返金はGumroad社の規定に従います。</p>
+    <h3>第7条（規約の変更）</h3><p>運営者は本規約を変更できるものとし、変更後の規約は本ページにて公表した時点で効力を生じます。</p>
+  </div>
+</div>
+<div class="pg" id="pg-privacy">
+  <div class="legal-page">
+    <div class="back-link" onclick="nav('home')">← トップに戻る</div>
+    <h2>プライバシーポリシー</h2>
+    <p>最終更新日: 2026年2月</p>
+    <h3>1. 収集する情報</h3><ul><li><strong>学習進捗データ</strong>: ブラウザのlocalStorageに保存（サーバー送信なし）</li><li><strong>アクセス解析</strong>: Google Analytics等で匿名情報を収集する場合があります</li><li><strong>広告</strong>: Google AdSenseがCookieを使用します</li></ul>
+    <h3>2. 利用目的</h3><ul><li>サービスの改善・運営</li><li>広告の配信・最適化</li></ul>
+    <h3>3. 第三者提供</h3><p>個人を特定できる情報を第三者に提供することはありません。</p>
+    <h3>4. Cookie</h3><p>本サービスではCookieを使用します。無効化も可能ですが一部機能が制限されます。</p>
+  </div>
+</div>
+<div class="pg" id="pg-law">
+  <div class="legal-page">
+    <div class="back-link" onclick="nav('home')">← トップに戻る</div>
+    <h2>特定商取引法に基づく表記</h2>
+    <table class="law-table">
+      <tr><td class="law-th">販売業者</td><td>坂本 大就</td></tr>
+      <tr><td class="law-th">運営責任者</td><td>坂本 大就</td></tr>
+      <tr><td class="law-th">所在地</td><td>請求があった場合に遅滞なく開示します</td></tr>
+      <tr><td class="law-th">連絡先</td><td>daijyu150m@gmail.com</td></tr>
+      <tr><td class="law-th">販売価格</td><td>各サービスページに表示する価格（税込）</td></tr>
+      <tr><td class="law-th">支払方法</td><td>クレジットカード（Gumroad経由）</td></tr>
+      <tr><td class="law-th">引渡し時期</td><td>決済完了後、即時利用可能</td></tr>
+      <tr><td class="law-th">返品・キャンセル</td><td>デジタルコンテンツの性質上、原則返金不可。解約はいつでも可能。</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+<!-- Success -->
+<div class="modal-overlay" id="okMo">
+  <div class="modal success-modal">
+    <div class="confetti" id="confetti"></div>
+    <div class="modal-icon">🎉</div>
+    <h3>正解！すばらしい！</h3>
+    <p id="okMsg">完璧です！</p>
+    <div class="xp-gain" id="xpGT">+50 XP</div>
+    <button class="btn btn-p btn-l" onclick="clsMoNx()">次のレッスンへ →</button>
+    <div style="margin-top:8px"><a href="#" class="modal-sub-link" onclick="clsMoBack();return false">📚 コース一覧に戻る</a></div>
+  </div>
+</div>
+
+<!-- Course Clear -->
+<div class="modal-overlay" id="clearMo">
+  <div class="modal clear-modal">
+    <div class="modal-icon big-icon">🏅</div>
+    <h3 id="clearTitle">コースクリア！</h3>
+    <p id="clearMsg">おめでとうございます！</p>
+    <div class="clear-praise" id="clearPraise"></div>
+    <button class="btn btn-p btn-l" id="nextCourseBtn" onclick="goNextCourse()" style="display:none">🚀 次のおすすめコースへ</button>
+    <button class="btn btn-o btn-l" onclick="clsClear()" style="margin-top:10px">🏠 ホームに戻る</button>
+  </div>
+</div>
+
+<!-- Level Up -->
+<div class="modal-overlay" id="luO" onclick="clsLU()">
+  <div class="levelup-content">
+    <div class="modal-icon huge-icon">🏆</div>
+    <h2 class="levelup-title">LEVEL UP!</h2>
+    <p>レベル <span id="nLv">2</span> 達成！</p>
+  </div>
+</div>
+
+<!-- Premium Preview -->
+<div class="modal-overlay" id="premiumMo">
+  <div class="modal premium-modal">
+    <div class="premium-preview-content" id="premiumPreview"></div>
+    <div class="premium-blur-overlay">
+      <div class="premium-cta">
+        <h3>🔒 この先はPROプラン限定</h3>
+        <p>全ての応用コースにアクセスできます</p>
+        <button class="btn btn-p btn-l" onclick="openGumroad();closePremium()">PROプランを見る</button>
+        <button class="btn btn-o" onclick="closePremium()" style="margin-top:8px">閉じる</button>
+      </div>
     </div>
-
-    <!-- Next Recommend -->
-    <div class="next-recommend">
-      <span class="nr-label">次のおすすめ →</span>
-      <span class="nr-course">🐣 Python基礎マスター（Lesson 4/5）</span>
-    </div>
   </div>
-</section>
-
-<!-- FEATURES -->
-<section class="features-sec">
-  <div class="feature-card">
-    <div class="feature-icon fi-blue">▶</div>
-    <h4>ブラウザで実行</h4>
-    <p>インストール不要。<br>書いたコードをその場で実行</p>
-  </div>
-  <div class="feature-card">
-    <div class="feature-icon fi-green">✓</div>
-    <h4>自動採点</h4>
-    <p>コードを自動チェック。<br>即座にフィードバック</p>
-  </div>
-  <div class="feature-card">
-    <div class="feature-icon fi-amber">⭐</div>
-    <h4>XP & レベル</h4>
-    <p>学習でXPを獲得。<br>レベルアップで達成感</p>
-  </div>
-  <div class="feature-card">
-    <div class="feature-icon fi-purple">💡</div>
-    <h4>段階的ヒント</h4>
-    <p>つまずいても安心。<br>段階的にサポート</p>
-  </div>
-</section>
-
-<!-- COURSES -->
-<section class="courses-sec">
-  <h3>📚 無料コース</h3>
-  <p class="courses-sub">基礎から応用まで、段階的にPythonを学べる12コース</p>
-  <div class="course-grid">
-    <div class="course-card"><span class="course-emoji">🌱</span><div class="course-name">Pythonをはじめよう</div><div class="course-meta">3 レッスン</div><div class="course-bar"><div class="course-bar-fill cbf-complete" style="width:100%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">🐣</span><div class="course-name">Python基礎マスター</div><div class="course-meta">5 レッスン</div><div class="course-bar"><div class="course-bar-fill cbf-progress" style="width:60%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">🔀</span><div class="course-name">条件分岐とループ</div><div class="course-meta">5 レッスン</div><div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">⚡</span><div class="course-name">関数をマスター</div><div class="course-meta">4 レッスン</div><div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">📦</span><div class="course-name">データ構造</div><div class="course-meta">4 レッスン</div><div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">✨</span><div class="course-name">きれいなコードの書き方</div><div class="course-meta">3 レッスン</div><div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">🛡️</span><div class="course-name">エラーと友達になろう</div><div class="course-meta">3 レッスン</div><div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">🏗️</span><div class="course-name">オブジェクト指向入門</div><div class="course-meta">3 レッスン</div><div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">🎮</span><div class="course-name">じゃんけんゲームを作ろう</div><div class="course-meta">4 レッスン</div><div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">🔢</span><div class="course-name">Pythonで電卓を作ろう</div><div class="course-meta">4 レッスン</div><div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">📊</span><div class="course-name">データ自動集計</div><div class="course-meta">4 レッスン</div><div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div></div>
-    <div class="course-card"><span class="course-emoji">⌨️</span><div class="course-name">ショートカットマスター</div><div class="course-meta">5 レッスン</div><div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div></div>
-  </div>
-
-  <h3 style="margin-top:40px">⭐ PROコース <span class="pro-tag">PRO</span></h3>
-  <div class="course-grid">
-    <div class="course-card"><span class="course-emoji">🎮</span><div class="course-name">ミニゲーム作り</div><div class="course-meta">3 レッスン ・ PRO</div></div>
-    <div class="course-card"><span class="course-emoji">🌐</span><div class="course-name">Webスクレイピング入門</div><div class="course-meta">3 レッスン ・ PRO</div></div>
-    <div class="course-card"><span class="course-emoji">🤖</span><div class="course-name">Python自動化入門</div><div class="course-meta">3 レッスン ・ PRO</div></div>
-  </div>
-
-  <div class="premium-banner">
-    <div class="promo-badge-banner">🎉 期間限定キャンペーン中</div>
-    <h4>🔓 PROプランで全コース解放</h4>
-    <p>ミニゲーム開発・Webスクレイピング・自動化など、実践コースにアクセスできます</p>
-    <div class="promo-code-box">
-      <div class="promo-code-label">プロモコード</div>
-      <div class="promo-code-value">PYTHON0</div>
-      <div class="promo-code-desc">→ 無料で解放！</div>
-    </div>
-    <button class="premium-btn">PROプランを見る →</button>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="ftr">
-  <div class="ftr-links">
-    <a href="#">利用規約</a>
-    <a href="#">プライバシーポリシー</a>
-    <a href="#">特定商取引法に基づく表記</a>
-  </div>
-  <small>&copy; 2026 PyMasters. All rights reserved.</small>
-</footer>
+</div>
 
 <script>
 // ── Matrix Code Rain ──
-const canvas = document.getElementById('matrixCanvas');
-const ctx = canvas.getContext('2d');
-
-function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
+(function(){
+const canvas=document.getElementById('matrixCanvas');
+if(!canvas)return;
+const ctx=canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
 resize();
-
-const kw = [
-  'def','class','import','from','return','yield','if','elif','else',
-  'for','while','try','except','with','as','lambda','print','range',
-  'len','list','dict','set','True','False','None','self','__init__',
-  'append','map','filter','zip','enumerate','open','read','write',
-  'int','str','float','bool','type','super','pass','break',
-  'async','await','raise','finally','assert',
-  '>>>','#','==','!=','<=','>=','**','//','->',':','{','}','[',']',
-  'numpy','pandas','flask','django','requests','json','os','sys',
-  'fibonacci','hello','world','python','data','code','learn','master'
-];
-
-const fs = 14;
-let cols, drops, speeds, words, ci;
-
-function initMatrix() {
-  cols = Math.floor(canvas.width / fs);
-  drops = Array(cols).fill(0).map(() => Math.random() * -80);
-  speeds = Array(cols).fill(0).map(() => 0.15 + Math.random() * 0.55);
-  words = Array(cols).fill('').map(() => kw[Math.floor(Math.random() * kw.length)]);
-  ci = Array(cols).fill(0);
+const kw=['def','class','import','from','return','yield','if','elif','else','for','while','try','except','with','lambda','print','range','len','list','dict','True','False','None','self','append','map','filter','zip','int','str','float','async','await','>>>','#','==','!=','<=','**','->',':','numpy','pandas','flask','json','os'];
+const fs=14;
+let cols,drops,speeds,words,ci;
+function init(){
+  cols=Math.floor(canvas.width/fs);
+  drops=Array(cols).fill(0).map(()=>Math.random()*-80);
+  speeds=Array(cols).fill(0).map(()=>0.15+Math.random()*0.55);
+  words=Array(cols).fill('').map(()=>kw[Math.floor(Math.random()*kw.length)]);
+  ci=Array(cols).fill(0);
 }
-initMatrix();
-
-window.addEventListener('resize', () => { resize(); initMatrix(); });
-
-const mColors = ['#22c55e', '#4ade80', '#3b82f6', '#60a5fa', '#f59e0b', '#a855f7', '#22d3ee'];
-
-function drawMatrix() {
-  ctx.fillStyle = 'rgba(6,6,10,0.055)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.font = `${fs}px "Fira Code",monospace`;
-
-  for (let i = 0; i < cols; i++) {
-    const w = words[i];
-    const ch = w[ci[i] % w.length];
-    const x = i * fs;
-    const y = drops[i] * fs;
-    const c = mColors[i % mColors.length];
-
-    // Head: bright
-    ctx.fillStyle = c;
-    ctx.globalAlpha = 0.85;
-    ctx.fillText(ch, x, y);
-
-    // Trail: dim
-    if (ci[i] > 0) {
-      ctx.globalAlpha = 0.12;
-      ctx.fillText(w[(ci[i] - 1) % w.length], x, (drops[i] - 1) * fs);
-    }
-
-    ctx.globalAlpha = 1;
-    ci[i]++;
-    drops[i] += speeds[i];
-
-    if (drops[i] * fs > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
-      ci[i] = 0;
-      words[i] = kw[Math.floor(Math.random() * kw.length)];
-    }
+init();
+window.addEventListener('resize',()=>{resize();init()});
+const mc=['#22c55e','#4ade80','#3b82f6','#60a5fa','#f59e0b','#a855f7','#22d3ee'];
+function draw(){
+  ctx.fillStyle='rgba(6,6,10,0.055)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.font=fs+'px "Fira Code",monospace';
+  for(let i=0;i<cols;i++){
+    const w=words[i],ch=w[ci[i]%w.length],x=i*fs,y=drops[i]*fs,c=mc[i%mc.length];
+    ctx.fillStyle=c;ctx.globalAlpha=0.85;ctx.fillText(ch,x,y);
+    if(ci[i]>0){ctx.globalAlpha=0.12;ctx.fillText(w[(ci[i]-1)%w.length],x,(drops[i]-1)*fs)}
+    ctx.globalAlpha=1;ci[i]++;drops[i]+=speeds[i];
+    if(drops[i]*fs>canvas.height&&Math.random()>0.975){drops[i]=0;ci[i]=0;words[i]=kw[Math.floor(Math.random()*kw.length)]}
   }
-  requestAnimationFrame(drawMatrix);
+  requestAnimationFrame(draw);
 }
-drawMatrix();
-
+draw();
 // ── Count Up ──
-function countUp() {
-  document.querySelectorAll('.hero-stat-num[data-target]').forEach(el => {
-    const t = +el.dataset.target;
-    const s = el.dataset.suffix || '';
-    const dur = 1200;
-    const st = performance.now();
-    function tick(now) {
-      const p = Math.min((now - st) / dur, 1);
-      const e = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(t * e) + s;
-      if (p < 1) requestAnimationFrame(tick);
-    }
+function countUp(){
+  document.querySelectorAll('.hero-stat-num[data-target]').forEach(el=>{
+    const t=+el.dataset.target,s=el.dataset.suffix||'',dur=1200,st=performance.now();
+    function tick(now){const p=Math.min((now-st)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(t*e)+s;if(p<1)requestAnimationFrame(tick)}
     requestAnimationFrame(tick);
   });
 }
-setTimeout(countUp, 600);
+setTimeout(countUp,600);
+})();
 </script>
+<script src="glossary.js"></script>
+<script src="courses.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
