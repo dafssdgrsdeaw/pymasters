@@ -12,7 +12,7 @@ const isMobile = () => window.innerWidth <= 768;
 
 // ===== PRO UNLOCK =====
 const PRO_KEY = 'PYMASTERS_PRO';
-const GUMROAD_URL = 'https://daijyu.gumroad.com/l/pymasters-pro';// ← Gumroad商品URL
+const GUMROAD_URL = 'https://daijyu.gumroad.com/l/pymasters-pro/PYTHON0';// ← Gumroad商品URL
 
 function isPro() {
   return localStorage.getItem('pymasters3_pro') === PRO_KEY;
