@@ -357,20 +357,34 @@ function init(){
 init();
 window.addEventListener('resize',()=>{resize();init()});
 const mc=['#22c55e','#4ade80','#3b82f6','#60a5fa','#f59e0b','#a855f7','#22d3ee'];
+let matrixRunning=true;
 function draw(){
-  ctx.fillStyle='rgba(6,6,10,0.055)';
+  if(!matrixRunning)return;
+  ctx.fillStyle='rgba(6,6,10,0.12)';
   ctx.fillRect(0,0,canvas.width,canvas.height);
   ctx.font=fs+'px "Fira Code",monospace';
   for(let i=0;i<cols;i++){
     const w=words[i],ch=w[ci[i]%w.length],x=i*fs,y=drops[i]*fs,c=mc[i%mc.length];
-    ctx.fillStyle=c;ctx.globalAlpha=0.85;ctx.fillText(ch,x,y);
-    if(ci[i]>0){ctx.globalAlpha=0.12;ctx.fillText(w[(ci[i]-1)%w.length],x,(drops[i]-1)*fs)}
+    ctx.fillStyle=c;ctx.globalAlpha=0.45;ctx.fillText(ch,x,y);
+    if(ci[i]>0){ctx.globalAlpha=0.06;ctx.fillText(w[(ci[i]-1)%w.length],x,(drops[i]-1)*fs)}
     ctx.globalAlpha=1;ci[i]++;drops[i]+=speeds[i];
     if(drops[i]*fs>canvas.height&&Math.random()>0.975){drops[i]=0;ci[i]=0;words[i]=kw[Math.floor(Math.random()*kw.length)]}
   }
   requestAnimationFrame(draw);
 }
 draw();
+// Matrix + promo only on home page
+const promoStrip=document.getElementById('promoStrip');
+new MutationObserver(()=>{
+  const onHome=document.getElementById('pg-home')?.classList.contains('on');
+  if(promoStrip)promoStrip.style.display=onHome?'block':'none';
+  if(onHome&&!matrixRunning){matrixRunning=true;canvas.style.opacity='.18';draw()}
+  else if(!onHome&&matrixRunning){
+    matrixRunning=false;
+    canvas.style.opacity='0';
+    setTimeout(()=>{if(!matrixRunning){ctx.clearRect(0,0,canvas.width,canvas.height)}},600);
+  }
+}).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
 // ── Count Up ──
 function countUp(){
   document.querySelectorAll('.hero-stat-num[data-target]').forEach(el=>{
