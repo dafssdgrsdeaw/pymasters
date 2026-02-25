@@ -1,0 +1,23 @@
+{
+  "name": "PyMasters - Python学習",
+  "short_name": "PyMasters",
+  "description": "ブラウザだけでPythonを学べる無料プログラミング学習サイト",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06060a",
+  "theme_color": "#06060a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

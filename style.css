@@ -1180,10 +1180,17 @@ button{cursor:pointer}
 @media(max-width:768px){
   body{font-size:15px}
 
-  .hdr{padding:10px 14px}
-  .logo h1{font-size:1.1rem}
-  .hdr-stats{gap:5px}
-  .badge{padding:3px 8px;font-size:.72rem}
+  .hdr{padding:8px 10px;gap:6px}
+  .logo h1{font-size:.95rem}
+  .logo-icon{width:24px;height:24px}
+  .hdr-right{gap:6px}
+  .search-btn{width:32px;height:32px;font-size:.9rem}
+  .hdr-stats{gap:4px}
+  .badge{padding:2px 6px;font-size:.68rem}
+  .xpbar-m{width:28px}
+
+  .promo-strip{padding:8px 14px}
+  .promo-strip-text{font-size:.75rem}
 
   .hero{padding:32px 16px 24px;min-height:auto}
   .hero h2{font-size:1.8rem;letter-spacing:-.03em}
@@ -1218,6 +1225,12 @@ button{cursor:pointer}
 
   .lesson-content{padding:18px 14px 24px}
   .lesson-title{font-size:1.25rem}
+
+  /* Editor: fix button overflow on mobile */
+  .ep-header{flex-wrap:wrap;padding:0 8px 0 0;gap:4px}
+  .ep-tab{padding:8px 12px;font-size:.78rem}
+  .ep-actions{gap:4px}
+  .ep-actions .btn{font-size:.78rem;padding:6px 10px}
 
   /* Editor: 16px minimum to prevent iOS zoom */
   .code-editor{
