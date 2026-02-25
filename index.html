@@ -2,360 +2,878 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyMasters - Python学習プラットフォーム | 無料でPythonをマスター</title>
-<meta name="description" content="ブラウザだけでPythonを学べる無料プログラミング学習サイト。コード実行・自動採点・XPシステム搭載。初心者から上級者まで。">
-<meta name="keywords" content="Python,プログラミング,学習,無料,初心者,コーディング,プログラミング教育">
-<meta property="og:title" content="PyMasters - Python学習プラットフォーム">
-<meta property="og:description" content="ブラウザだけでPythonを学べる無料プログラミング学習サイト">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://pymasters.dev/ogp.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PyMasters - Python学習プラットフォーム">
-<meta name="twitter:description" content="ブラウザだけでPythonを学べる無料プログラミング学習サイト">
-<meta name="twitter:image" content="https://pymasters.dev/ogp.png">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TF5LHTEM7G"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-TF5LHTEM7G');
-</script>
-<!-- Google AdSense: 自分のIDに置き換えてください -->
-<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
-<!-- Pyodide: lazy loaded when entering lesson page -->
-<!-- Google Fonts: Fira Code for editor -->
+<title>PyMasters - Premium Mockup v2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:#08080c;color:#fafafa;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── HEADER ── */
+.hdr{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:56px;
+  background:#08080cdd;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid #ffffff06;
+}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo-icon{width:28px;height:28px;border-radius:6px}
+.logo h1{font-size:1.05rem;font-weight:800;letter-spacing:-.02em}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 10px;border-radius:8px;font-size:.75rem;font-weight:600;
+  background:#ffffff06;border:1px solid #ffffff0a;
+}
+
+/* ── PROMO STRIP ── */
+.promo-strip{
+  background:linear-gradient(90deg,#08080c,#0f2e1a,#08080c);
+  border-bottom:1px solid #22c55e18;
+  padding:10px 24px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.promo-strip::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,#22c55e06 50%,transparent 100%);
+}
+.promo-strip-text{
+  font-size:.84rem;color:#a1a1aa;position:relative;
+}
+.promo-strip-text strong{color:#4ade80;font-weight:700}
+.promo-code-inline{
+  font-family:'Fira Code',monospace;font-weight:700;color:#4ade80;
+  background:#22c55e12;padding:2px 8px;border-radius:4px;
+  border:1px dashed #22c55e35;margin:0 4px;
+}
+
+/* ── HERO ── */
+.hero{
+  position:relative;
+  padding:70px 24px 50px;
+  max-width:1100px;margin:0 auto;
+}
+
+/* Background: Mesh gradient blobs */
+.hero-blob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px)}
+.hero-blob-1{
+  width:500px;height:500px;top:-150px;left:-100px;
+  background:radial-gradient(circle,#f59e0b18,transparent 70%);
+  animation:blobDrift1 14s ease-in-out infinite;
+}
+.hero-blob-2{
+  width:450px;height:450px;bottom:-100px;right:-50px;
+  background:radial-gradient(circle,#3b82f618,transparent 70%);
+  animation:blobDrift2 18s ease-in-out infinite;
+}
+.hero-blob-3{
+  width:350px;height:350px;top:30%;left:40%;
+  background:radial-gradient(circle,#22c55e10,transparent 70%);
+  animation:blobDrift3 12s ease-in-out infinite;
+}
+@keyframes blobDrift1{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,30px)}}
+@keyframes blobDrift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,-40px)}}
+@keyframes blobDrift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-30px) scale(1.15)}}
+
+/* Noise texture overlay */
+.hero-noise{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+
+/* Subtle grid */
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(#ffffff03 1px,transparent 1px),
+    linear-gradient(90deg,#ffffff03 1px,transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;z-index:0;
+  mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,black 0%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,black 0%,transparent 70%);
+}
+
+.hero-inner{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:50px;align-items:center;
+  position:relative;z-index:1;
+}
+
+/* Left: Text */
+.hero-text{text-align:left}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-bottom:22px;
+  animation:fadeUp .5s ease both;
+}
+.hero-tag-python{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 14px;border-radius:100px;
+  background:linear-gradient(135deg,#3b82f618,#f59e0b18);
+  border:1px solid #f59e0b25;
+  font-size:.78rem;font-weight:700;
+  color:#fbbf24;
+}
+.hero-tag-python svg{width:14px;height:14px}
+.hero-tag-free{
+  padding:5px 12px;border-radius:100px;
+  background:#22c55e10;border:1px solid #22c55e25;
+  font-size:.75rem;font-weight:700;color:#4ade80;
+}
+
+.hero h2{
+  font-size:2.9rem;font-weight:900;line-height:1.12;
+  margin-bottom:20px;letter-spacing:-.045em;
+  animation:fadeUp .5s ease .08s both;
+}
+.hero-em-wrap{
+  position:relative;display:inline-block;
+}
+.hero em{
+  font-style:normal;
+  background:linear-gradient(135deg,#fbbf24 0%,#f59e0b 40%,#22d3ee 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:shimmer 5s ease-in-out infinite;
+}
+/* Underline decoration */
+.hero-em-wrap::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#fbbf24,#f59e0b,#22d3ee);
+  border-radius:2px;opacity:.5;
+  animation:fadeUp .5s ease .2s both;
+}
+@keyframes shimmer{0%,100%{background-position:0% center}50%{background-position:200% center}}
+
+.hero p{
+  color:#a1a1aa;font-size:1.02rem;margin-bottom:30px;
+  line-height:1.8;max-width:440px;
+  animation:fadeUp .5s ease .15s both;
+}
+
+/* CTA Group */
+.hero-cta-group{
+  display:flex;align-items:center;gap:14px;margin-bottom:30px;
+  animation:fadeUp .5s ease .22s both;
+}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 34px;border-radius:12px;border:none;cursor:pointer;
+  font-size:.95rem;font-weight:700;color:#000;
+  background:linear-gradient(135deg,#fbbf24,#f59e0b);
+  box-shadow:0 0 40px #f59e0b40,0 4px 16px #f59e0b30;
+  transition:all .3s ease;
+  position:relative;
+}
+.hero-cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 60px #f59e0b55,0 8px 24px #f59e0b40;
+}
+.hero-cta-secondary{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:14px 24px;border-radius:12px;border:1px solid #ffffff12;
+  cursor:pointer;font-size:.9rem;font-weight:600;color:#a1a1aa;
+  background:#ffffff06;
+  transition:all .3s ease;
+}
+.hero-cta-secondary:hover{border-color:#ffffff25;color:#fafafa;background:#ffffff0a}
+
+/* Stats with count-up */
+.hero-stats{
+  display:inline-flex;align-items:center;gap:0;
+  background:#ffffff05;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid #ffffff08;border-radius:14px;
+  padding:12px 0;
+  animation:fadeUp .5s ease .3s both;
+}
+.hero-stat{display:flex;flex-direction:column;align-items:center;padding:0 24px}
+.hero-stat-num{
+  font-size:1.2rem;font-weight:900;color:#fafafa;
+  font-family:'Space Mono',monospace;
+  font-variant-numeric:tabular-nums;
+}
+.hero-stat-label{font-size:.7rem;color:#52525b;margin-top:2px;font-weight:500;text-transform:uppercase;letter-spacing:.05em}
+.hero-stat-sep{width:1px;height:28px;background:#ffffff0a}
+
+/* Right: Live Lesson Preview */
+.hero-visual{
+  perspective:1200px;
+  position:relative;
+  animation:fadeUp .7s ease .15s both;
+}
+.hero-visual::before{
+  content:'';position:absolute;top:50%;left:50%;
+  width:400px;height:400px;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,#f59e0b15,#3b82f610 50%,transparent 70%);
+  pointer-events:none;z-index:0;
+  filter:blur(60px);
+}
+
+.lesson-preview{
+  position:relative;z-index:1;
+  background:#0c0c10;
+  border:1px solid #ffffff10;border-radius:16px;
+  overflow:hidden;
+  transform:rotateY(-5deg) rotateX(2deg);
+  transition:transform .6s cubic-bezier(.23,1,.32,1),box-shadow .6s ease;
+  box-shadow:
+    0 30px 80px #00000070,
+    0 0 50px #f59e0b0a,
+    0 0 100px #3b82f608,
+    inset 0 1px 0 #ffffff08;
+}
+.lesson-preview:hover{
+  transform:rotateY(-1deg) rotateX(0deg);
+  box-shadow:
+    0 35px 90px #00000080,
+    0 0 70px #f59e0b12,
+    0 0 120px #3b82f60c,
+    inset 0 1px 0 #ffffff0c;
+}
+
+/* Lesson header bar */
+.lp-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;
+  background:#10101890;
+  border-bottom:1px solid #ffffff08;
+}
+.lp-header-left{display:flex;align-items:center;gap:8px}
+.lp-dots{display:flex;gap:6px}
+.lp-dot{width:10px;height:10px;border-radius:50%}
+.lp-d-r{background:#ef4444;box-shadow:0 0 6px #ef444440}
+.lp-d-y{background:#f59e0b;box-shadow:0 0 6px #f59e0b40}
+.lp-d-g{background:#22c55e;box-shadow:0 0 6px #22c55e40}
+.lp-tab{
+  font-size:.72rem;color:#71717a;font-family:'Fira Code',monospace;
+  background:#ffffff06;padding:3px 10px;border-radius:4px;
+  border:1px solid #ffffff08;
+}
+.lp-header-right{display:flex;gap:6px}
+.lp-btn{
+  padding:4px 12px;border-radius:6px;font-size:.72rem;font-weight:600;
+  border:none;cursor:pointer;
+}
+.lp-btn-run{background:#3b82f6;color:#fff}
+.lp-btn-check{background:#22c55e;color:#fff}
+
+/* Lesson content area */
+.lp-body{display:flex;min-height:280px}
+
+/* Left: lesson text */
+.lp-lesson{
+  flex:0 0 42%;padding:18px 16px;
+  border-right:1px solid #ffffff06;
+  font-size:.78rem;line-height:1.7;color:#a1a1aa;
+  overflow:hidden;
+}
+.lp-lesson-title{
+  font-size:.88rem;font-weight:800;color:#fafafa;margin-bottom:6px;
+  display:flex;align-items:center;gap:6px;
+}
+.lp-lesson-badge{
+  font-size:.65rem;padding:2px 6px;border-radius:4px;
+  background:#f59e0b18;color:#fbbf24;font-weight:700;
+}
+.lp-lesson p{margin-bottom:10px}
+.lp-lesson code{
+  font-family:'Fira Code',monospace;font-size:.75rem;
+  background:#ffffff08;padding:1px 5px;border-radius:3px;color:#fbbf24;
+}
+.lp-hint{
+  margin-top:10px;padding:8px 10px;border-radius:8px;
+  background:#f59e0b08;border:1px solid #f59e0b15;
+  font-size:.72rem;color:#fbbf24;
+}
+
+/* Right: code editor */
+.lp-editor{
+  flex:1;display:flex;flex-direction:column;
+}
+.lp-code{
+  flex:1;padding:16px 18px;
+  font-family:'Fira Code',monospace;font-size:.8rem;line-height:1.8;
+  color:#d4d4d8;white-space:pre;
+  position:relative;
+}
+.ln{color:#3f3f46;user-select:none;display:inline-block;width:22px;text-align:right;margin-right:14px}
+.code-kw{color:#c084fc}
+.code-fn{color:#60a5fa}
+.code-num{color:#f59e0b}
+.code-str{color:#34d399}
+.code-cmt{color:#52525b;font-style:italic}
+.code-op{color:#94a3b8}
+.code-var{color:#fbbf24}
+
+/* Typing cursor */
+.typing-cursor{
+  display:inline-block;width:2px;height:1em;
+  background:#f59e0b;vertical-align:text-bottom;
+  animation:cursorBlink .8s step-end infinite;
+  margin-left:1px;
+}
+@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* Output panel */
+.lp-output{
+  border-top:1px solid #ffffff06;
+  padding:10px 18px;
+  font-family:'Fira Code',monospace;font-size:.75rem;
+  color:#22c55e;background:#0a0a0e;
+}
+.lp-output-label{color:#52525b;font-size:.68rem;margin-bottom:4px}
+.lp-output-line{opacity:.8}
+
+/* Success badge overlay */
+.lp-success{
+  position:absolute;top:16px;right:16px;
+  padding:6px 14px;border-radius:100px;
+  background:#22c55e18;border:1px solid #22c55e30;
+  font-size:.72rem;font-weight:700;color:#4ade80;
+  display:flex;align-items:center;gap:4px;
+  animation:popIn .4s ease both;
+  animation-delay:4.5s;
+  opacity:0;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+
+/* ── FEATURES ── */
+.features-sec{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  max-width:1100px;margin:0 auto;padding:20px 24px 60px;
+  position:relative;
+}
+/* Divider line */
+.features-sec::before{
+  content:'';position:absolute;top:-10px;left:50%;
+  width:200px;height:1px;transform:translateX(-50%);
+  background:linear-gradient(90deg,transparent,#ffffff10,transparent);
+}
+
+.feature-card{
+  background:#0e0e14;
+  border:1px solid #ffffff06;border-radius:14px;
+  padding:26px 18px;text-align:center;
+  transition:all .4s cubic-bezier(.23,1,.32,1);
+  position:relative;overflow:hidden;
+}
+.feature-card::before{
+  content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
+  background:var(--fc-accent,#3b82f6);
+  opacity:0;transition:all .4s ease;
+}
+.feature-card::after{
+  content:'';position:absolute;top:-30px;left:50%;
+  width:80px;height:80px;transform:translateX(-50%);
+  background:radial-gradient(circle,var(--fc-accent,#3b82f6)20,transparent 70%);
+  opacity:0;transition:opacity .4s ease;
+  filter:blur(25px);
+}
+.feature-card:hover{
+  border-color:#ffffff12;
+  transform:translateY(-5px);
+  box-shadow:0 16px 50px var(--fc-glow,#3b82f608);
+}
+.feature-card:hover::before{opacity:.6;left:10%;right:10%}
+.feature-card:hover::after{opacity:1}
+
+.feature-card:nth-child(1){--fc-accent:#3b82f6;--fc-glow:#3b82f60a}
+.feature-card:nth-child(2){--fc-accent:#22c55e;--fc-glow:#22c55e0a}
+.feature-card:nth-child(3){--fc-accent:#f59e0b;--fc-glow:#f59e0b0a}
+.feature-card:nth-child(4){--fc-accent:#a855f7;--fc-glow:#a855f70a}
+
+.feature-icon{
+  width:48px;height:48px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;margin:0 auto 14px;
+  position:relative;
+}
+.fi-blue{background:#3b82f612;border:1px solid #3b82f618}
+.fi-green{background:#22c55e12;border:1px solid #22c55e18}
+.fi-amber{background:#f59e0b12;border:1px solid #f59e0b18}
+.fi-purple{background:#a855f712;border:1px solid #a855f718}
+
+.feature-card h4{font-size:.88rem;font-weight:700;margin-bottom:5px;color:#e4e4e7}
+.feature-card p{font-size:.78rem;color:#71717a;line-height:1.5}
+
+/* ── COURSES ── */
+.courses-sec{
+  max-width:1100px;margin:0 auto;padding:0 24px 60px;
+}
+.courses-sec h3{
+  font-size:1.15rem;font-weight:800;margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;
+}
+.course-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;
+}
+.course-card{
+  background:#0e0e14;
+  border:1px solid #ffffff06;border-radius:14px;
+  padding:18px;transition:all .3s ease;
+  cursor:pointer;position:relative;overflow:hidden;
+}
+.course-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#f59e0b,#3b82f6);
+  opacity:0;transition:opacity .3s ease;
+}
+.course-card:hover{
+  border-color:#ffffff12;transform:translateY(-3px);
+  box-shadow:0 12px 40px #00000030;
+}
+.course-card:hover::before{opacity:1}
+.course-emoji{font-size:1.5rem;margin-bottom:6px;display:block}
+.course-name{font-size:.88rem;font-weight:700;margin-bottom:3px}
+.course-meta{font-size:.72rem;color:#52525b}
+.course-bar{height:3px;background:#ffffff08;border-radius:4px;margin-top:10px;overflow:hidden}
+.course-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.cbf-complete{background:linear-gradient(90deg,#22c55e,#4ade80)}
+.cbf-progress{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+
+/* Premium Banner */
+.premium-banner{
+  margin-top:32px;padding:36px 32px;border-radius:18px;
+  background:#0e0e14;
+  border:1px solid #f59e0b15;
+  text-align:center;position:relative;overflow:hidden;
+}
+.premium-banner::before{
+  content:'';position:absolute;inset:0;
+  background:conic-gradient(from 0deg at 50% 50%,transparent,#f59e0b06,transparent,#3b82f606,transparent);
+  animation:rotateConic 15s linear infinite;
+}
+@keyframes rotateConic{to{transform:rotate(360deg)}}
+.premium-banner::after{
+  content:'';position:absolute;top:-50%;left:50%;
+  width:300px;height:300px;transform:translateX(-50%);
+  background:radial-gradient(circle,#f59e0b08,transparent 60%);
+  filter:blur(40px);
+}
+.premium-banner h4{font-size:1.08rem;font-weight:800;margin-bottom:8px;position:relative}
+.premium-banner>p{font-size:.86rem;color:#71717a;margin-bottom:22px;position:relative}
+.premium-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:12px 28px;border-radius:10px;border:none;cursor:pointer;
+  font-size:.9rem;font-weight:700;color:#000;
+  background:linear-gradient(135deg,#fbbf24,#f59e0b);
+  box-shadow:0 0 30px #f59e0b25;
+  transition:all .3s ease;position:relative;
+}
+.premium-btn:hover{box-shadow:0 0 50px #f59e0b40;transform:translateY(-2px)}
+
+/* ── FOOTER ── */
+.ftr{
+  text-align:center;padding:40px 24px;
+  border-top:1px solid #ffffff06;
+}
+.ftr-links{display:flex;gap:20px;justify-content:center;margin-bottom:12px}
+.ftr-links a{color:#3f3f46;font-size:.8rem;text-decoration:none;transition:color .2s}
+.ftr-links a:hover{color:#71717a}
+.ftr small{color:#27272a;font-size:.75rem}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .hero{padding:48px 20px 40px}
+  .hero-inner{grid-template-columns:1fr;gap:32px}
+  .hero-text{text-align:center}
+  .hero h2{font-size:2rem}
+  .hero p{margin-left:auto;margin-right:auto}
+  .hero-cta-group{justify-content:center;flex-wrap:wrap}
+  .hero-stats{margin-left:auto;margin-right:auto}
+  .lesson-preview{transform:none}
+  .lesson-preview:hover{transform:none}
+  .lp-body{flex-direction:column}
+  .lp-lesson{flex:none;border-right:none;border-bottom:1px solid #ffffff06}
+  .features-sec{grid-template-columns:1fr 1fr;gap:10px}
+  .course-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .hero h2{font-size:1.6rem}
+  .features-sec{grid-template-columns:1fr}
+  .hero-stats{flex-wrap:wrap;justify-content:center;gap:8px}
+  .hero-stat-sep{display:none}
+  .hero-cta-group{flex-direction:column}
+}
+</style>
 </head>
 <body>
 
-<!-- Pyodide Loading (shown in editor area, not full page) -->
-
-<!-- ===== HEADER ===== -->
+<!-- HEADER -->
 <header class="hdr">
-  <div class="logo" onclick="nav('home')">
+  <div class="logo">
     <img class="logo-icon" src="icon-192x192.png" alt="PyMasters">
     <h1>PyMasters</h1>
   </div>
   <div class="hdr-right">
-    <button class="search-btn" onclick="openSearch()" title="用語検索">🔍</button>
-    <div class="hdr-stats">
-      <div class="badge st-c"><span>🔥</span><span id="stN">0</span>日</div>
-      <div class="badge lv-c"><span>⭐</span>Lv.<span id="lvN">1</span></div>
-      <div class="badge xp-c"><span>✨</span><span id="xpN">0</span>XP
-        <div class="xpbar-m"><div class="xpbar-f" id="xpF" style="width:0%"></div></div>
-      </div>
-    </div>
+    <div class="badge">🔥 3日</div>
+    <div class="badge">⭐ Lv.5</div>
+    <div class="badge">✨ 420 XP</div>
   </div>
 </header>
 
-<!-- ===== SEARCH MODAL (用語検索) ===== -->
-<div class="modal-overlay" id="searchModal">
-  <div class="search-modal">
-    <div class="search-modal-header">
-      <input type="text" id="searchInput" placeholder="用語を検索... 例: 変数、リスト、for文" oninput="doSearch(this.value)" autocomplete="off">
-      <button class="close-btn" onclick="closeSearch()">✕</button>
-    </div>
-    <div class="search-results" id="searchResults">
-      <div class="search-placeholder">🔍 プログラミング用語を検索してみよう</div>
-    </div>
-  </div>
+<!-- PROMO STRIP -->
+<div class="promo-strip">
+  <span class="promo-strip-text">
+    <strong>🎉 期間限定キャンペーン</strong> — PROコースが無料！コード <span class="promo-code-inline">PYTHON0</span> を入力 →
+  </span>
 </div>
 
-<!-- ===== GLOSSARY POPUP (用語ポップアップ) ===== -->
-<div class="glossary-popup" id="glossaryPopup">
-  <div class="glossary-popup-header">
-    <span class="glossary-popup-title" id="gpTitle"></span>
-    <button class="close-btn-sm" onclick="closeGlossary()">✕</button>
-  </div>
-  <div class="glossary-popup-short" id="gpShort"></div>
-  <div class="glossary-popup-detail" id="gpDetail"></div>
-  <div class="glossary-popup-example" id="gpExample" style="display:none">
-    <div class="gp-ex-label">コード例:</div>
-    <pre class="gp-ex-code" id="gpExCode"></pre>
-  </div>
-  <div class="glossary-popup-related" id="gpRelated"></div>
-</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-grid"></div>
 
-<!-- ===== HOME PAGE ===== -->
-<div class="pg on" id="pg-home">
-  <div class="hero">
-    <div class="hero-bg-glow"></div>
-    <div class="hero-grid-bg"></div>
-    <div class="hero-inner">
-      <div class="hero-text">
-        <h2>Pythonを<em>ゼロから</em><br>マスターしよう</h2>
-        <p>やさしい解説と実際にコードを書く演習で、楽しく確実に身につきます。インストール不要、ブラウザだけでOK。</p>
-        <button class="btn btn-p btn-l hero-cta-btn" id="heroCTA" onclick="heroCTAClick()">🚀 学習を始める</button>
-        <div class="hero-stats">
-          <div class="hero-stat"><span class="hero-stat-num">56</span><span class="hero-stat-label">レッスン</span></div>
-          <div class="hero-stat-sep"></div>
-          <div class="hero-stat"><span class="hero-stat-num">15</span><span class="hero-stat-label">コース</span></div>
-          <div class="hero-stat-sep"></div>
-          <div class="hero-stat"><span class="hero-stat-num">100%</span><span class="hero-stat-label">無料</span></div>
+  <div class="hero-inner">
+    <!-- Left -->
+    <div class="hero-text">
+      <div class="hero-tag">
+        <span class="hero-tag-python">
+          <svg viewBox="0 0 256 255" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid"><path d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072zM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13z" fill="#fbbf24"/><path d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.518 33.897zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13z" fill="#3b82f6"/></svg>
+          Python学習
+        </span>
+        <span class="hero-tag-free">✦ 無料</span>
+      </div>
+      <h2>コードを書いて<br><span class="hero-em-wrap"><em>実力を</em></span>つけよう</h2>
+      <p>やさしい解説と実践的な演習で、<br>楽しく確実にPythonが身につく。<br>インストール不要、ブラウザだけでOK。</p>
+      <div class="hero-cta-group">
+        <button class="hero-cta">🚀 学習を始める</button>
+        <button class="hero-cta-secondary">📖 コース一覧</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num" data-target="56">0</span>
+          <span class="hero-stat-label">Lessons</span>
+        </div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-num" data-target="15">0</span>
+          <span class="hero-stat-label">Courses</span>
+        </div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-num" data-target="100" data-suffix="%">0%</span>
+          <span class="hero-stat-label">Free</span>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="code-mockup">
-          <div class="code-titlebar">
-            <div class="code-dots"><span class="cd-r"></span><span class="cd-y"></span><span class="cd-g"></span></div>
-            <span class="code-filename">fibonacci.py</span>
+    </div>
+
+    <!-- Right: Lesson Preview (not just code) -->
+    <div class="hero-visual">
+      <div class="lesson-preview">
+        <div class="lp-success">✓ 正解！ +15XP</div>
+        <div class="lp-header">
+          <div class="lp-header-left">
+            <div class="lp-dots">
+              <div class="lp-dot lp-d-r"></div>
+              <div class="lp-dot lp-d-y"></div>
+              <div class="lp-dot lp-d-g"></div>
+            </div>
+            <span class="lp-tab">📝 Lesson 3 / 8</span>
           </div>
-          <pre class="code-body"><span class="code-kw">def</span> <span class="code-fn">fib</span>(n):
-    <span class="code-kw">if</span> n <= <span class="code-num">1</span>:
-        <span class="code-kw">return</span> n
-    <span class="code-kw">return</span> fib(n-<span class="code-num">1</span>) + fib(n-<span class="code-num">2</span>)
-
-<span class="code-fn">print</span>(fib(<span class="code-num">10</span>))
-<span class="code-out">&gt;&gt;&gt; 55</span></pre>
+          <div class="lp-header-right">
+            <button class="lp-btn lp-btn-run">▶ 実行</button>
+            <button class="lp-btn lp-btn-check">✓ 採点</button>
+          </div>
+        </div>
+        <div class="lp-body">
+          <!-- Lesson panel -->
+          <div class="lp-lesson">
+            <div class="lp-lesson-title">
+              リストの操作
+              <span class="lp-lesson-badge">基礎文法</span>
+            </div>
+            <p><code>append()</code> を使ってリストに要素を追加しましょう。</p>
+            <p style="color:#71717a">空のリスト <code>fruits</code> に<br>"apple" と "banana" を追加し、<br>リストの長さを出力してください。</p>
+            <div class="lp-hint">💡 ヒント: <code>.append()</code> を2回使います</div>
+          </div>
+          <!-- Editor panel -->
+          <div class="lp-editor">
+            <div class="lp-code" id="codeArea">
+<span class="ln">1</span><span class="code-var">fruits</span> <span class="code-op">=</span> []
+<span class="ln">2</span>
+<span class="ln">3</span><span class="code-cmt"># ここにコードを書こう</span>
+<span class="ln">4</span><span id="typingLine"></span><span class="typing-cursor"></span>
+<span class="ln">5</span>
+<span class="ln">6</span></div>
+            <div class="lp-output">
+              <div class="lp-output-label">出力:</div>
+              <div class="lp-output-line" id="outputLine"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Features Section -->
-  <div class="features-sec">
-    <div class="feature-card">
-      <div class="feature-icon fi-blue">💻</div>
-      <h4>ブラウザで実行</h4>
-      <p>インストール不要。開いてすぐコードが書ける</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-green">✅</div>
-      <h4>自動で答え合わせ</h4>
-      <p>コードを実行すると即座に正誤判定</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-purple">⭐</div>
-      <h4>XP & レベルアップ</h4>
-      <p>ゲーム感覚で楽しく続けられる</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon fi-amber">💡</div>
-      <h4>段階的ヒント</h4>
-      <p>つまずいても安心。ヒントで導きます</p>
-    </div>
+<!-- FEATURES -->
+<section class="features-sec">
+  <div class="feature-card">
+    <div class="feature-icon fi-blue">▶</div>
+    <h4>ブラウザで実行</h4>
+    <p>インストール不要。<br>書いたコードをその場で実行</p>
   </div>
-
-  <!-- Progress Card -->
-  <div class="progress-section">
-    <div class="progress-card">
-      <h3>📊 あなたの学習進捗</h3>
-      <div class="pbar"><div class="pbar-f" id="oP" style="width:0%"></div></div>
-      <div class="ptxt" id="oPT">0 / 0 レッスン完了</div>
-    </div>
-    <div class="next-recommend" id="nextRecommend" style="display:none"></div>
+  <div class="feature-card">
+    <div class="feature-icon fi-green">✓</div>
+    <h4>自動採点</h4>
+    <p>コードを自動チェック。<br>即座にフィードバック</p>
   </div>
-
-  <div class="ad-slot" style="display:none"><p>広告エリア（AdSense配置位置）</p></div>
-
-  <div class="courses-sec" id="csec">
-    <h3>📚 無料コース</h3>
-    <p class="courses-subtitle">基礎から応用まで、段階的に学べます</p>
-    <div class="course-grid" id="cg"></div>
-
-    <h3 style="margin-top:40px">⭐ PROコース <span class="pro-label">有料</span></h3>
-    <div class="course-grid" id="cg-pro"></div>
-    <div class="premium-banner">
-      <div class="promo-badge">期間限定キャンペーン中</div>
-      <h4>🔓 PROプランで全コース解放</h4>
-      <p>ミニゲーム開発・Webスクレイピング・自動化など、実践コースにアクセスできます</p>
-      <div class="promo-code-box">
-        <span class="promo-label">割引コード</span>
-        <span class="promo-code">PYTHON0</span>
-        <span class="promo-desc">→ 無料で解放！</span>
-      </div>
-      <button class="btn btn-p btn-l" onclick="openGumroad()">PROプランを見る</button>
-    </div>
+  <div class="feature-card">
+    <div class="feature-icon fi-amber">⭐</div>
+    <h4>XP & レベル</h4>
+    <p>学習でXPを獲得。<br>レベルアップで達成感</p>
   </div>
-
-  <div class="ad-slot" style="display:none"><p>広告エリア（AdSense配置位置）</p></div>
-
-  <footer class="ftr">
-    <div class="ftr-links">
-      <a href="#" onclick="nav('terms');return false">利用規約</a>
-      <a href="#" onclick="nav('privacy');return false">プライバシーポリシー</a>
-      <a href="#" onclick="nav('law');return false">特定商取引法に基づく表記</a>
-    </div>
-    <small>&copy; 2026 PyMasters. All rights reserved.</small>
-  </footer>
-</div>
-
-<!-- ===== COURSE DETAIL PAGE ===== -->
-<div class="pg" id="pg-course">
-  <div class="course-detail">
-    <div class="back-link" onclick="nav('home')">← コース一覧に戻る</div>
-    <div id="cdH"></div>
-    <div class="lesson-list" id="lL"></div>
+  <div class="feature-card">
+    <div class="feature-icon fi-purple">💡</div>
+    <h4>段階的ヒント</h4>
+    <p>つまずいても安心。<br>段階的にサポート</p>
   </div>
-</div>
+</section>
 
-<!-- ===== LESSON PAGE ===== -->
-<div class="pg" id="pg-lesson">
-  <div class="lesson-page">
-    <div class="lesson-content" id="lcEl"></div>
-    <div class="editor-panel" id="editorPanel">
-      <!-- Pyodide loading overlay (shown over editor only) -->
-      <div class="pyodide-loading" id="pyodideLoading" style="display:none">
-        <div class="pyodide-loading-inner">
-          <div class="pyodide-spinner"></div>
-          <div class="pyodide-loading-text">🐍 Python環境を準備中…</div>
-          <div class="pyodide-progress-bar"><div class="pyodide-progress-fill" id="pyodideProgressFill"></div></div>
-          <div class="pyodide-progress-text" id="pyodideProgressText">0%</div>
-          <div class="pyodide-cache-note">初回は少し時間がかかりますが、2回目以降はキャッシュで高速です</div>
-        </div>
-      </div>
-      <div class="ep-header">
-        <div class="ep-file-tab">
-          <div class="ep-tab active">🐍 lesson.py</div>
-        </div>
-        <div class="ep-actions">
-          <button class="btn btn-s" onclick="rstCode()">↺ リセット</button>
-          <button class="btn btn-p" onclick="runCode()">▶ 実行</button>
-          <button class="btn btn-g" onclick="chkAns()">✓ 答え合わせ</button>
-        </div>
-      </div>
-      <div class="exercise-inst" id="eiEl"></div>
-      <div class="editor-wrapper">
-        <div class="editor-highlight-layer" id="edHL" aria-hidden="true"></div>
-        <div class="editor-line-numbers" id="edLN" aria-hidden="true"></div>
-        <textarea class="code-editor" id="edEl" spellcheck="false"></textarea>
-      </div>
-      <div class="editor-status editor-status-pc">
-        <span>Enter: 実行</span>
-        <span>Shift+Enter: 改行</span>
-        <span>Ctrl+/: コメント</span>
-        <span>Alt+↑↓: 行移動</span>
-      </div>
-      <div class="hint-toggle" id="htEl" onclick="togHint()">💡 ヒントを見る</div>
-      <div class="hint-panel" id="hpEl" style="display:none"></div>
-      <div class="output-panel">
-        <div class="output-header">出力</div>
-        <div class="output-content" id="opEl">ここに実行結果が表示されます</div>
-      </div>
-      <div class="lesson-nav">
-        <button class="btn btn-o" id="pvBtn" onclick="pvL()">← 前へ</button>
-        <button class="btn btn-o" id="showAnsBtn" onclick="showAnswer()" style="display:none">👁 答えを見る</button>
-        <button class="btn btn-o" id="nxBtn" onclick="nxL()">次へ →</button>
-      </div>
-      <div class="lesson-nav-sub">
-        <a href="#" onclick="openCourse(cCrs.id);return false">📚 コース一覧に戻る</a>
-      </div>
+<!-- COURSES -->
+<section class="courses-sec">
+  <h3>📚 無料コース</h3>
+  <div class="course-grid">
+    <div class="course-card">
+      <span class="course-emoji">🚀</span>
+      <div class="course-name">Python入門</div>
+      <div class="course-meta">5 レッスン</div>
+      <div class="course-bar"><div class="course-bar-fill cbf-complete" style="width:100%"></div></div>
+    </div>
+    <div class="course-card">
+      <span class="course-emoji">📦</span>
+      <div class="course-name">基礎文法</div>
+      <div class="course-meta">8 レッスン</div>
+      <div class="course-bar"><div class="course-bar-fill cbf-progress" style="width:60%"></div></div>
+    </div>
+    <div class="course-card">
+      <span class="course-emoji">🔄</span>
+      <div class="course-name">制御フロー</div>
+      <div class="course-meta">6 レッスン</div>
+      <div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div>
+    </div>
+    <div class="course-card">
+      <span class="course-emoji">⚙️</span>
+      <div class="course-name">関数</div>
+      <div class="course-meta">5 レッスン</div>
+      <div class="course-bar"><div class="course-bar-fill" style="width:0%"></div></div>
     </div>
   </div>
-</div>
 
-<!-- ===== LEGAL PAGES ===== -->
-<div class="pg" id="pg-terms">
-  <div class="legal-page">
-    <div class="back-link" onclick="nav('home')">← トップに戻る</div>
-    <h2>利用規約</h2>
-    <p>最終更新日: 2026年2月</p>
-    <h3>第1条（適用）</h3><p>本規約は、PyMasters（以下「本サービス」）の利用条件を定めるものです。ユーザーは本規約に同意の上、本サービスを利用するものとします。</p>
-    <h3>第2条（サービス内容）</h3><p>本サービスは、プログラミング学習のための教育コンテンツを提供するWebサービスです。コンテンツは無料プランと有料プラン（PROプラン）があります。</p>
-    <h3>第3条（禁止事項）</h3><ul><li>本サービスのコンテンツの無断転載・複製・販売</li><li>サービスの逆コンパイル・リバースエンジニアリング</li><li>不正アクセスやサーバーへの過度な負荷</li><li>他のユーザーへの迷惑行為</li></ul>
-    <h3>第4条（知的財産権）</h3><p>本サービスに含まれるすべてのコンテンツの著作権は運営者に帰属します。</p>
-    <h3>第5条（免責事項）</h3><p>本サービスは教育目的で提供されており、内容の正確性や完全性を保証するものではありません。</p>
-    <h3>第6条（有料サービス）</h3><p>PROプランの決済はGumroad社を通じて行われます。解約はいつでも可能です。返金はGumroad社の規定に従います。</p>
-    <h3>第7条（規約の変更）</h3><p>運営者は本規約を変更できるものとし、変更後の規約は本ページにて公表した時点で効力を生じます。</p>
-  </div>
-</div>
-<div class="pg" id="pg-privacy">
-  <div class="legal-page">
-    <div class="back-link" onclick="nav('home')">← トップに戻る</div>
-    <h2>プライバシーポリシー</h2>
-    <p>最終更新日: 2026年2月</p>
-    <h3>1. 収集する情報</h3><ul><li><strong>学習進捗データ</strong>: ブラウザのlocalStorageに保存（サーバー送信なし）</li><li><strong>アクセス解析</strong>: Google Analytics等で匿名情報を収集する場合があります</li><li><strong>広告</strong>: Google AdSenseがCookieを使用します</li></ul>
-    <h3>2. 利用目的</h3><ul><li>サービスの改善・運営</li><li>広告の配信・最適化</li></ul>
-    <h3>3. 第三者提供</h3><p>個人を特定できる情報を第三者に提供することはありません。</p>
-    <h3>4. Cookie</h3><p>本サービスではCookieを使用します。無効化も可能ですが一部機能が制限されます。</p>
-  </div>
-</div>
-<div class="pg" id="pg-law">
-  <div class="legal-page">
-    <div class="back-link" onclick="nav('home')">← トップに戻る</div>
-    <h2>特定商取引法に基づく表記</h2>
-    <p>最終更新日: 2026年2月</p>
-    <table class="law-table">
-      <tr><td class="law-th">販売業者</td><td>坂本 大就</td></tr>
-      <tr><td class="law-th">運営責任者</td><td>坂本 大就</td></tr>
-      <tr><td class="law-th">所在地</td><td>請求があった場合に遅滞なく開示します</td></tr>
-      <tr><td class="law-th">連絡先</td><td>daijyu150m@gmail.com</td></tr>
-      <tr><td class="law-th">販売価格</td><td>各サービスページに表示する価格（税込）</td></tr>
-      <tr><td class="law-th">支払方法</td><td>クレジットカード（Gumroad経由）</td></tr>
-      <tr><td class="law-th">引渡し時期</td><td>決済完了後、即時利用可能</td></tr>
-      <tr><td class="law-th">返品・キャンセル</td><td>デジタルコンテンツの性質上、原則返金不可。解約はいつでも可能。</td></tr>
-    </table>
-  </div>
-</div>
-
-<!-- ===== MODALS ===== -->
-<!-- Success -->
-<div class="modal-overlay" id="okMo">
-  <div class="modal success-modal">
-    <div class="confetti" id="confetti"></div>
-    <div class="modal-icon">🎉</div>
-    <h3>正解！すばらしい！</h3>
-    <p id="okMsg">完璧です！</p>
-    <div class="xp-gain" id="xpGT">+50 XP</div>
-    <button class="btn btn-p btn-l" onclick="clsMoNx()">次のレッスンへ →</button>
-    <div style="margin-top:8px"><a href="#" class="modal-sub-link" onclick="clsMoBack();return false">📚 コース一覧に戻る</a></div>
-  </div>
-</div>
-
-<!-- Course Clear -->
-<div class="modal-overlay" id="clearMo">
-  <div class="modal clear-modal">
-    <div class="modal-icon big-icon">🏅</div>
-    <h3 id="clearTitle">コースクリア！</h3>
-    <p id="clearMsg">おめでとうございます！</p>
-    <div class="clear-praise" id="clearPraise"></div>
-    <button class="btn btn-p btn-l" id="nextCourseBtn" onclick="goNextCourse()" style="display:none">🚀 次のおすすめコースへ</button>
-    <button class="btn btn-o btn-l" onclick="clsClear()" style="margin-top:10px">🏠 ホームに戻る</button>
-  </div>
-</div>
-
-<!-- Level Up -->
-<div class="modal-overlay" id="luO" onclick="clsLU()">
-  <div class="levelup-content">
-    <div class="modal-icon huge-icon">🏆</div>
-    <h2 class="levelup-title">LEVEL UP!</h2>
-    <p>レベル <span id="nLv">2</span> 達成！</p>
-  </div>
-</div>
-
-<!-- Premium Preview -->
-<div class="modal-overlay" id="premiumMo">
-  <div class="modal premium-modal">
-    <div class="premium-preview-content" id="premiumPreview"></div>
-    <div class="premium-blur-overlay">
-      <div class="premium-cta">
-        <h3>🔒 この先はPROプラン限定</h3>
-        <p>全ての応用コースにアクセスできます</p>
-        <div class="promo-code-box promo-code-box-sm">
-          <span class="promo-label">コード</span>
-          <span class="promo-code">PYTHON0</span>
-          <span class="promo-desc">→ 無料！</span>
-        </div>
-        <button class="btn btn-p btn-l" onclick="openGumroad();closePremium()">PROプランを見る</button>
-        <button class="btn btn-o" onclick="closePremium()" style="margin-top:8px">閉じる</button>
-      </div>
+  <h3 style="margin-top:40px">⭐ PROコース <span style="font-size:.7rem;background:#f59e0b15;color:#fbbf24;padding:3px 10px;border-radius:100px;margin-left:6px;font-weight:700">PRO</span></h3>
+  <div class="course-grid">
+    <div class="course-card">
+      <span class="course-emoji">🎮</span>
+      <div class="course-name">ミニゲーム開発</div>
+      <div class="course-meta">4 レッスン ・ PRO</div>
+    </div>
+    <div class="course-card">
+      <span class="course-emoji">🕷</span>
+      <div class="course-name">Webスクレイピング</div>
+      <div class="course-meta">3 レッスン ・ PRO</div>
+    </div>
+    <div class="course-card">
+      <span class="course-emoji">🤖</span>
+      <div class="course-name">自動化</div>
+      <div class="course-meta">3 レッスン ・ PRO</div>
     </div>
   </div>
-</div>
 
-<script src="glossary.js"></script>
-<script src="courses.js"></script>
-<script src="app.js"></script>
+  <div class="premium-banner">
+    <h4>🔓 PROプランで全コース解放</h4>
+    <p>ミニゲーム開発・Webスクレイピング・自動化など、実践コースにアクセスできます</p>
+    <button class="premium-btn">PROプランを見る →</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="ftr">
+  <div class="ftr-links">
+    <a href="#">利用規約</a>
+    <a href="#">プライバシーポリシー</a>
+    <a href="#">特定商取引法に基づく表記</a>
+  </div>
+  <small>&copy; 2026 PyMasters. All rights reserved.</small>
+</footer>
+
+<script>
+// ── Typing Animation ──
+const typingSequence = [
+  { text: 'fruits.append("apple")', delay: 60 },
+  { text: '\n', delay: 300 },
+  { pause: 200 },
+  { lineNum: true }, // insert line 5
+  { text: 'fruits.append("banana")', delay: 60 },
+  { text: '\n', delay: 300 },
+  { pause: 200 },
+  { lineNum: true },
+  { text: 'print(len(fruits))', delay: 60 },
+  { pause: 800 },
+  { output: '2', delay: 0 },
+];
+
+const typingEl = document.getElementById('typingLine');
+const outputEl = document.getElementById('outputLine');
+let currentLine = '';
+let lineCount = 4;
+
+function syntaxHighlight(text) {
+  return text
+    .replace(/(".*?")/g, '<span class="code-str">$1</span>')
+    .replace(/\b(append|print|len)\b/g, '<span class="code-fn">$1</span>')
+    .replace(/\b(fruits)\b/g, '<span class="code-var">$1</span>');
+}
+
+async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function runTyping() {
+  await sleep(1500); // initial delay
+  const codeArea = document.getElementById('codeArea');
+
+  for (const step of typingSequence) {
+    if (step.pause) {
+      await sleep(step.pause);
+      continue;
+    }
+    if (step.output) {
+      outputEl.textContent = '>>> ' + step.output;
+      continue;
+    }
+    if (step.lineNum) {
+      lineCount++;
+      // Update line 4+ content in the code area
+      const existing = codeArea.innerHTML;
+      const cursorSpan = '<span class="typing-cursor"></span>';
+      // Add newline with line number before cursor
+      typingEl.innerHTML = currentLine;
+      currentLine = '';
+      // Create new typing line
+      const newLineHTML = `\n<span class="ln">${lineCount}</span><span id="typingLine"></span>${cursorSpan}\n`;
+
+      // We need to restructure - simpler approach: build all in typingEl
+      continue;
+    }
+    if (step.text === '\n') {
+      currentLine += '<br>';
+      typingEl.innerHTML = syntaxHighlight(currentLine);
+      await sleep(step.delay);
+      continue;
+    }
+    // Type character by character
+    const chars = step.text.split('');
+    for (const char of chars) {
+      currentLine += char;
+      typingEl.innerHTML = syntaxHighlight(currentLine);
+      await sleep(step.delay + Math.random() * 30);
+    }
+  }
+}
+
+// ── Count-Up Animation ──
+function animateCountUp() {
+  const nums = document.querySelectorAll('.hero-stat-num[data-target]');
+  nums.forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const duration = 1200;
+    const start = performance.now();
+
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(target * eased);
+      el.textContent = current + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+// ── Init ──
+// Simple typing: just show the full sequence with proper line numbers
+async function simpleTyping() {
+  await sleep(1500);
+
+  const lines = [
+    { code: 'fruits.append("apple")', lineNum: 4 },
+    { code: 'fruits.append("banana")', lineNum: 5 },
+    { code: 'print(len(fruits))', lineNum: 6 },
+  ];
+
+  const container = document.getElementById('typingLine');
+  const cursor = document.querySelector('.typing-cursor');
+  let fullHTML = '';
+
+  for (let li = 0; li < lines.length; li++) {
+    const line = lines[li];
+    const chars = line.code.split('');
+
+    // Type each character
+    for (let i = 0; i < chars.length; i++) {
+      const partial = line.code.substring(0, i + 1);
+      const highlighted = syntaxHighlight(partial);
+
+      let display = '';
+      // Previous complete lines
+      for (let p = 0; p < li; p++) {
+        display += syntaxHighlight(lines[p].code) + '\n<span class="ln">' + lines[p + 1].lineNum + '</span>';
+      }
+      display += highlighted;
+
+      container.innerHTML = display;
+      await sleep(55 + Math.random() * 25);
+    }
+
+    // After finishing line, add newline
+    if (li < lines.length - 1) {
+      await sleep(250);
+      fullHTML += syntaxHighlight(line.code) + '\n<span class="ln">' + lines[li + 1].lineNum + '</span>';
+    } else {
+      fullHTML += syntaxHighlight(line.code);
+    }
+    container.innerHTML = fullHTML;
+  }
+
+  // Show output after typing
+  await sleep(600);
+  cursor.style.display = 'none';
+  outputEl.innerHTML = '<span style="color:#22c55e;opacity:.8">>>> 2</span>';
+}
+
+// Start animations when page loads
+window.addEventListener('load', () => {
+  setTimeout(animateCountUp, 400);
+  simpleTyping();
+});
+</script>
+
 </body>
 </html>
